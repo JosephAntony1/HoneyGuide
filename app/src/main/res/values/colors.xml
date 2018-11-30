@@ -3,4 +3,36 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!-- Screens background color-->
+    <color name="bg_screen1">#FF9E80</color>
+    <color name="bg_screen2">#A5D6A7</color>
+    <color name="bg_screen3">#82B1FF</color>
+    <color name="bg_screen4">#ffd180</color>
+
+    <!-- dots inactive colors -->
+    <color name="dot_dark_screen1">#FF7043</color>
+    <color name="dot_dark_screen2">#66BB6A</color>
+    <color name="dot_dark_screen3">#42A5F5</color>
+    <color name="dot_dark_screen4">#ffa726</color>
+
+    <!-- dots active colors -->
+    <color name="dot_light_screen1">#FFCCBC</color>
+    <color name="dot_light_screen2">#c8e6c9</color>
+    <color name="dot_light_screen3">#BBDEFB</color>
+    <color name="dot_light_screen4">#ffe0b2</color>
+
+    <array name="array_dot_active">
+        <item>@color/dot_light_screen1</item>
+        <item>@color/dot_light_screen2</item>
+        <item>@color/dot_light_screen3</item>
+        <item>@color/dot_light_screen4</item>
+    </array>
+
+    <array name="array_dot_inactive">
+        <item>@color/dot_dark_screen1</item>
+        <item>@color/dot_dark_screen2</item>
+        <item>@color/dot_dark_screen3</item>
+        <item>@color/dot_dark_screen4</item>
+    </array>
 </resources>
