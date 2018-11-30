@@ -74,7 +74,7 @@ public class WelcomePage extends AppCompatActivity {
 
             @Override
             public void onSent(byte[] payload, byte channel) {
-                Log.v(TAG, "This is called when a payload has been sent " + payload  + " on channel: " + channel);
+                Log.v(TAG, "This is called when a payload has been sent " + new String(payload) + " on channel: " + channel);
             }
 
             @Override
@@ -84,7 +84,7 @@ public class WelcomePage extends AppCompatActivity {
 
             @Override
             public void onReceived(byte[] payload, byte channel) {
-                Log.v(TAG, "This is called when a payload has been received " + payload  + " on channel: " + channel);
+                Log.v(TAG, "This is called when a payload has been received \"" +  new String(payload)  + "\" on channel: " + channel);
             }
 
             @Override
