@@ -1,0 +1,27 @@
+<resources>
+
+    <string name="app_name">HoneyGuide</string>
+
+    <string name="welcome">Welcome</string>
+    <string name="welcomeStr">Welcome to the HoneyGuide for The National Gallery!</string>
+    <string name="start_button_str">Click to start your visit journey!</string>
+
+    <string name="defaultPiece">Searching for art piece</string>
+    <string name="defaultPieceStr">Walk closer to the art piece you want to know more!</string>
+    <string name="artPiece_1_button_str">Test button for getting art piece 1</string>
+    <string name="artPiece_2_button_str">Test button for getting art piece 2</string>
+    <string name="artPiece_3_button_str">Test button for getting art piece 3</string>
+
+    <string name="artPiece">The Art Piece</string>
+    <string name="saveArtPiece_button_str">Save</string>
+
+    <string name="list_pieces">List Pieces (WIP)</string>
+    <string name="add_temp">Add Piece (Test Activity)</string>
+    <string name="show_piece">Show Piece (WIP)</string>
+
+    <string name="hintTxtItem">Enter an item here ...</string>
+    <string name="lblBtnAdd">Add Item</string>
+    <string name="lblBtnShow">Show Pieces</string>
+    <string name="txtEmpty">List is empty</string>
+
+</resources>
