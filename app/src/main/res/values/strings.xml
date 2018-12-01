@@ -8,6 +8,12 @@
 
     <string name="defaultPiece">Searching for art piece</string>
     <string name="defaultPieceStr">Walk closer to the art piece you want to know more!</string>
+
+
+    <!--Button on the Saved Art Piece view (ShowPiece.java)-->
+    <string name="shareButton">Share</string>
+    <string name="delete">Delete</string>
+
     <string name="artPiece_1_button_str">Test button for getting art piece 1</string>
     <string name="artPiece_2_button_str">Test button for getting art piece 2</string>
     <string name="artPiece_3_button_str">Test button for getting art piece 3</string>
