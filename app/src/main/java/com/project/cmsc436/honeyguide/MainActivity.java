@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 if(payload!=null) {
                     Log.v(TAG, "This is called when a payload has been received \"" + new String(payload) + "\" on channel: " + channel);
 
-                    db.collection("art-pieces").document(new String(payload))
+                    if(!db.collection("art-pieces").document(new String(payload))
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -132,7 +132,12 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d(TAG, "get failed with ", task.getException());
                             }
                         }
-                    });
+                    }).isSuccessful()){
+                        Log.d(TAG, "No such collection");
+                        new Toast(getApplicationContext()).makeText(getApplicationContext(), "Database Error",Toast.LENGTH_LONG).show();
+
+                    }
+
                 }
             }
 
