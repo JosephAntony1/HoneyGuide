@@ -43,6 +43,8 @@ import io.chirp.connect.models.ChirpError;
 
 /** Note that here we are inheriting ListActivity class instead of Activity class **/
 public class MainActivity extends AppCompatActivity {
+    /** Items entered by the user is stored in this ArrayList variable */
+    ArrayList<String> list = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
                 (new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        //Fragment selectedFragment = null;
                         switch (item.getItemId()) {
                             case R.id.navigation_home:
                                 FragmentTransaction homeTransaction = getSupportFragmentManager().beginTransaction();
@@ -64,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
                                 homeTransaction.commit();
                                 break;
                             case R.id.navigation_saved:
+                                FragmentTransaction savedTransaction = getSupportFragmentManager().beginTransaction();
+                                savedTransaction.replace(R.id.frame_layout, SavedFragment.newInstance());
+                                savedTransaction.commit();
                                 break;
                             case R.id.navigation_settings:
                                 FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
@@ -71,9 +75,6 @@ public class MainActivity extends AppCompatActivity {
                                 settingsTransaction.commit();
                                 break;
                         }
-                        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout, selectedFragment);
-                        transaction.commit();*/
                         return true;
                     }
                 });
@@ -89,6 +90,17 @@ public class MainActivity extends AppCompatActivity {
     public void launchHomeScreen() {
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    public void addItem() {
+        Log.i("i", "entered addItem()");
+        EditText edit = (EditText) findViewById(R.id.txtItem);
+        list.add(edit.getText().toString());
+        edit.setText("");
+    }
+
+    public ArrayList<String> getList() {
+        return list;
     }
 
 }
