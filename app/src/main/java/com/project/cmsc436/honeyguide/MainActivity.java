@@ -125,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
                                     new Toast(getApplicationContext()).makeText(getApplicationContext(), (String)document.getData().get("Full title"),Toast.LENGTH_LONG).show();
                                 } else {
                                     Log.d(TAG, "No such document");
+                                    new Toast(getApplicationContext()).makeText(getApplicationContext(), "No such document",Toast.LENGTH_LONG).show();
+
                                 }
                             } else {
                                 Log.d(TAG, "get failed with ", task.getException());
