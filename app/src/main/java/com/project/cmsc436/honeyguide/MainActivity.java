@@ -1,11 +1,16 @@
 package com.project.cmsc436.honeyguide;
 
 import android.Manifest;
+import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.util.Log;
 import android.widget.Button;
@@ -21,48 +26,49 @@ import io.chirp.connect.models.ConnectState;
 
 /** Note that here we are inheriting ListActivity class instead of Activity class **/
 public class MainActivity extends AppCompatActivity {
-
-    /** Items entered by the user is stored in this ArrayList variable */
-    ArrayList<String> list = new ArrayList<String>();
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button btn = (Button) findViewById(R.id.btnAdd);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addItem();
-            }
-        });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)
+                findViewById(R.id.navigation);
 
-        Button btn1 = (Button) findViewById(R.id.btnShow);
-        btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showItems();
-            }
-        });
+        bottomNavigationView.setOnNavigationItemSelectedListener
+                (new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        //Fragment selectedFragment = null;
+                        switch (item.getItemId()) {
+                            case R.id.navigation_home:
+                                FragmentTransaction homeTransaction = getSupportFragmentManager().beginTransaction();
+                                homeTransaction.replace(R.id.frame_layout, HomeFragment.newInstance());
+                                homeTransaction.commit();
+                                break;
+                            case R.id.navigation_saved:
+                                break;
+                            case R.id.navigation_settings:
+                                FragmentTransaction settingsTransaction = getSupportFragmentManager().beginTransaction();
+                                settingsTransaction.replace(R.id.frame_layout, new SettingsFragment());
+                                settingsTransaction.commit();
+                                break;
+                        }
+                        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, selectedFragment);
+                        transaction.commit();*/
+                        return true;
+                    }
+                });
 
-
-
+        //Manually displaying the first fragment - one time only
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, HomeFragment.newInstance());
+        transaction.commit();
     }
 
-    public void addItem() {
-        Log.i("i", "entered addItem()");
-        EditText edit = (EditText) findViewById(R.id.txtItem);
-        list.add(edit.getText().toString());
-        edit.setText("");
-    }
-
-    public void showItems() {
-        Log.i("i1", "entered showItems()");
-        Intent intent = new Intent(this, ListPiecesView.class);
-        intent.putStringArrayListExtra("pieces", list);
-        startActivity(intent);
+    public void launchHomeScreen() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
 
