@@ -2,7 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.preference.PreferenceCategory
-        android:title="Category 1">
+        android:title="Settings"
+        android:color="@color/colorPrimary">
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:key="key1"
@@ -21,6 +22,18 @@
             android:title="CheckBox Preference"
             android:summary="CheckBox Summary"
             android:defaultValue="true"/>
+
+        <android.support.v7.preference.Preference
+            android:key="@string/settings_clear"
+            android:title="Clear data"
+            android:summary="Delete all saved pieces and revoke app permissions"
+            android:icon="@drawable/ic_clear"/>
+
+        <android.support.v7.preference.Preference
+            android:key="@string/settings_intro"
+            android:title="Tutorial"
+            android:summary="View introductory slides"
+            android:icon="@drawable/ic_intro"/>
     </android.support.v7.preference.PreferenceCategory>
 
 </android.support.v7.preference.PreferenceScreen>

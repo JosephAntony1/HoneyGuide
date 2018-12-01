@@ -1,26 +1,20 @@
 package com.project.cmsc436.honeyguide;
 
-import android.Manifest;
-import android.app.Fragment;
-import android.content.pm.PackageManager;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -202,6 +196,11 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<String> getList() {
         return list;
+    }
+    
+    public void clearData() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        activityManager.clearApplicationUserData();
     }
 
 
