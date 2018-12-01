@@ -39,6 +39,8 @@
             android:name=".ShowPiece"
             android:label="@string/show_piece">
         </activity>
+
+        <service android:name=".ChirpService"></service>
     </application>
 
 
