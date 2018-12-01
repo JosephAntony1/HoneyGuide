@@ -8,11 +8,13 @@ import android.widget.TextView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 public class ShowPiece extends AppCompatActivity {
 
 
     TextView textView;
-    String item;
+    HashMap<String, String> item;
     RatingBar ratingBar;
     ImageView imageView;
 
@@ -22,13 +24,13 @@ public class ShowPiece extends AppCompatActivity {
         setContentView(R.layout.activity_show_piece);
 
         Intent intent = getIntent();
-        item = intent.getStringExtra("piece");
+        item = (HashMap<String, String>)intent.getExtras().get("data");
 
         imageView = (ImageView) findViewById(R.id.imageView1);
         imageView.setImageResource(R.drawable.wip);
 
         textView = (TextView) findViewById(R.id.piece);
-        textView.setText(item);
+        textView.setText(item.get("Full title"));
 
         ratingBar = findViewById(R.id.rating);
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

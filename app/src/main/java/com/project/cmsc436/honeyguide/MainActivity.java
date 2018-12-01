@@ -17,6 +17,8 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -137,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 if(payload!=null) {
                     Log.v(TAG, "This is called when a payload has been received \"" + new String(payload) + "\" on channel: " + channel);
 
-                    if(!db.collection("art-pieces").document(new String(payload))
+                    db.collection("art-pieces").document(new String(payload))
                             .get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -147,21 +149,24 @@ public class MainActivity extends AppCompatActivity {
                                         if (document.exists()) {
                                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                                            new Toast(getApplicationContext()).makeText(getApplicationContext(), (String)document.getData().get("Full title"),Toast.LENGTH_LONG).show();
+                                            new Toast(getApplicationContext()).makeText(getApplicationContext(), (String) document.getData().get("Full title"), Toast.LENGTH_LONG).show();
+
+                                            Intent i = new Intent(getApplicationContext(), ShowPiece.class);
+
+                                            i.putExtra("data", (HashMap) document.getData());
+
+                                            startActivity(i);
+
                                         } else {
                                             Log.d(TAG, "No such document");
-                                            new Toast(getApplicationContext()).makeText(getApplicationContext(), "No such document",Toast.LENGTH_LONG).show();
+                                            new Toast(getApplicationContext()).makeText(getApplicationContext(), "No such document", Toast.LENGTH_LONG).show();
 
                                         }
                                     } else {
                                         Log.d(TAG, "get failed with ", task.getException());
                                     }
                                 }
-                            }).isSuccessful()){
-                        Log.d(TAG, "No such collection");
-                        new Toast(getApplicationContext()).makeText(getApplicationContext(), "Database Error",Toast.LENGTH_LONG).show();
-
-                    }
+                            });
 
                 }
             }
