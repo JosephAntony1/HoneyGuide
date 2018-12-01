@@ -3,6 +3,7 @@ package com.project.cmsc436.honeyguide;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
 import android.content.Intent;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import io.chirp.connect.ChirpConnect;
 import io.chirp.connect.interfaces.ConnectEventListener;
@@ -32,8 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = "Honeyguide-Debug: ";
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
 
-    ConnectEventListener connectEventListener;
-    ChirpConnect chirpConnect;
+    private ConnectEventListener connectEventListener;
+    private ChirpConnect chirpConnect;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,8 +108,27 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onReceived(byte[] payload, byte channel) {
-                if(payload!=null)
-                    Log.v(TAG, "This is called when a payload has been received \"" +  new String(payload)  + "\" on channel: " + channel);
+                if(payload!=null) {
+                    Log.v(TAG, "This is called when a payload has been received \"" + new String(payload) + "\" on channel: " + channel);
+
+                    db.collection("art-pieces").document(new String(payload))
+                            .get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                } else {
+                                    Log.d(TAG, "No such document");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+                }
             }
 
             @Override
@@ -113,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         chirpConnect.setListener(connectEventListener);
         chirpConnect.start();
+
 
     }
 
@@ -170,4 +203,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 }
