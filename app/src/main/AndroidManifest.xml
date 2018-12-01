@@ -36,9 +36,6 @@
             android:name=".MainActivity"
             android:label="@string/add_temp"/>
         <activity
-            android:name=".ListPiecesView"
-            android:label="@string/list_pieces" />
-        <activity
             android:name=".ShowPiece"
             android:label="@string/show_piece">
         </activity>
