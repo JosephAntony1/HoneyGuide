@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "474889659352",
+    "firebase_url": "https://honeyguide-75d56.firebaseio.com",
+    "project_id": "honeyguide-75d56",
+    "storage_bucket": "honeyguide-75d56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474889659352:android:5b2c9a9cecc8bb9d",
+        "android_client_info": {
+          "package_name": "com.project.cmsc436.honeyguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474889659352-8ksod2s98vccei2v3ehaeikf23u9103o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.cmsc436.honeyguide",
+            "certificate_hash": "4718b9dee7162a77da8876cfaa1c260f9dc639be"
+          }
+        },
+        {
+          "client_id": "474889659352-liccjcnopbab9lvnu7p8c7g3mdgr2iak.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.cmsc436.honeyguide",
+            "certificate_hash": "0eb19f8309a3b4338c87ef2a421af3dffd7b50de"
+          }
+        },
+        {
+          "client_id": "474889659352-ogv2qn079ge3ke5fh1sng24ufa0mdb7o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAByiHeUDWixfN4qavR_yogsMzFt4GFKpU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474889659352-ogv2qn079ge3ke5fh1sng24ufa0mdb7o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
