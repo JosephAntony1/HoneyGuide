@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -17,15 +18,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
 import android.content.Intent;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import io.chirp.connect.ChirpConnect;
 import io.chirp.connect.interfaces.ConnectEventListener;
 import io.chirp.connect.interfaces.ConnectSetConfigListener;
 import io.chirp.connect.models.ChirpError;
 import io.chirp.connect.models.ConnectState;
+import io.chirp.connect.ChirpConnect;
+import io.chirp.connect.interfaces.ConnectEventListener;
+import io.chirp.connect.interfaces.ConnectSetConfigListener;
+import io.chirp.connect.models.ChirpError;
 
 /** Note that here we are inheriting ListActivity class instead of Activity class **/
 public class MainActivity extends AppCompatActivity {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+        
+      
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -70,6 +90,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
-
 
 }
