@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -120,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                                    new Toast(getApplicationContext()).makeText(getApplicationContext(), (String)document.getData().get("Full title"),Toast.LENGTH_LONG).show();
                                 } else {
                                     Log.d(TAG, "No such document");
                                 }
