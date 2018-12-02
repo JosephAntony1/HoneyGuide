@@ -45,8 +45,8 @@ public class MicTest extends AppCompatActivity {
     private String TAG = "Honeyguide-MicTest";
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
 
-    String KEY = getString(R.string.chirp_application_key);
-    String SECRET = getString(R.string.chirp_client_secret);
+    private String KEY;
+    private String SECRET;
     //String TEST = getString(R.string.chirp_application_key);
 
 
@@ -56,6 +56,7 @@ public class MicTest extends AppCompatActivity {
     ConnectEventListener connectEventListener;
     private SoundPool soundPool;
     private int soundID;
+    private int streamID;
 
     Button testButton;
 
@@ -63,6 +64,9 @@ public class MicTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mic_test);
+
+        KEY = getString(R.string.chirp_application_key);
+        SECRET = getString(R.string.chirp_client_secret);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -120,6 +124,7 @@ public class MicTest extends AppCompatActivity {
                     Log.v(TAG, "This is called when a payload has been received \"" + new String(payload) + "\" on channel: " + channel);
                     TextView v = (TextView) findViewById(R.id.result);
                     v.setText(new String(payload));
+                    soundPool.stop(streamID);
                     Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_SHORT);
 
                 } else {
@@ -154,7 +159,9 @@ public class MicTest extends AppCompatActivity {
                 }
 
                 Toast.makeText(getApplicationContext(), "Playing Chirp...", Toast.LENGTH_SHORT);
-                soundPool.play(soundID,1,1,1,-1,1);
+                TextView v = findViewById(R.id.result);
+                v.setText("Chirp message will appear here");
+                streamID = soundPool.play(soundID,1,1,1,-1,1);
                 chirpConnect.setListener(connectEventListener);
                 chirpConnect.start();
             }
