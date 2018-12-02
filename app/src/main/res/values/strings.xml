@@ -57,8 +57,11 @@
     <string name="settings_clear">settings_clear</string>
 
     <!--mic test strings-->
-    <string name="micTestExplanation">HoneyGuide needs your microphone in order to hear the world chirping! We\'ve set up a test to make sure you're ready to wander on. </string>
+    <string name="micTestExplanation">HoneyGuide needs your microphone in order to hear the world chirping! We have set up a test to make sure you are ready to wander on. </string>
 
     <string name="testSpeakerText">Click here to test your phone\'s microphone:</string>
     <string name="testSpeakerButtonText">TEST MIC</string>
+
+    <string name="chirp_application_key">6A7Ab5AADf29C8B8F1c0cdC02</string>
+    <string name="chirp_client_secret">08ED5e8Fb2bfEC0BEeCDa8bc5Ea0B4EafB1A48BECd151eCdEa</string>
 </resources>
