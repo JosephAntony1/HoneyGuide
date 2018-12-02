@@ -35,10 +35,10 @@ public class ShowPiece extends AppCompatActivity {
 
         item = intent.getStringExtra("piece");
 
-        imageView = (ImageView) findViewById(R.id.imageView1);
+        imageView = (ImageView) findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.wip);
 
-        textView = (TextView) findViewById(R.id.piece);
+        textView = (TextView) findViewById(R.id.Title);
         textView.setText(item);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

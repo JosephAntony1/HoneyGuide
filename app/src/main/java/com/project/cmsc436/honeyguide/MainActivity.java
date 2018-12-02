@@ -14,9 +14,21 @@ import android.view.MenuItem;
 import android.util.Log;
 import android.widget.EditText;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Intent;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+
+import android.content.SharedPreferences;
+
 
 
 /** Note that here we are inheriting ListActivity class instead of Activity class **/
@@ -25,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> list = new ArrayList<String>();
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
     private String TAG = "Honeyguide-Debug: ";
+    private final String COLLECTION_NAME = "art_pieces ";
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference docRef;
+    private SharedPreferences sharedpreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +76,36 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        //fetching information from firebase once
 
+        for(int i = 1; i <= 3; i++){
+            docRef = db.collection(COLLECTION_NAME).document(Integer.toString(i));
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map< String,Object> docFields = document.getData();
+                            String title = docFields.get("Full title").toString();
+                            Log.d(TAG, "Firebase Success: " + title);
+                            sharedpreferences = getSharedPreferences(title, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+
+                            for (Map.Entry<String,Object> field : docFields.entrySet()){
+                                editor.putString(field.getKey(), field.getValue().toString());
+                            }
+
+                            editor.apply();
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -78,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
         EditText edit = (EditText) findViewById(R.id.txtItem);
         list.add(edit.getText().toString());
         edit.setText("");
+    }
+
+    //testing purpose
+    public void launchDefaultPiece(){
+        startActivity(new Intent(MainActivity.this,defaultPiece.class));
     }
 
     public ArrayList<String> getList() {
