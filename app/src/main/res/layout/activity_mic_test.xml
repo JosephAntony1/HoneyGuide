@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MicTest">
+
+        <TextView
+            android:id="@+id/testMicExplanation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/micTestExplanation"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/testSpeakerText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/testSpeakerText"
+            android:layout_below="@+id/testMicExplanation"
+            android:gravity="center"/>
+        <Button
+            android:id="@+id/testSpeakerButtonText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/testSpeakerButtonText"
+            android:layout_below="@+id/testSpeakerText"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Chirp message will appear here"
+            android:gravity="center"/>
+
+
+</LinearLayout>
