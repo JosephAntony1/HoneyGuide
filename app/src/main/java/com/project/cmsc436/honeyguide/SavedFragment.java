@@ -2,40 +2,53 @@ package com.project.cmsc436.honeyguide;
 
 import java.util.ArrayList;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.content.Intent;
 import android.widget.ListView;
+import android.view.ViewGroup;
 
-public class ListPiecesView extends AppCompatActivity {
+public class SavedFragment extends Fragment {
 
 
     ArrayList<String> list = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ListView listView;
 
+    public static SavedFragment newInstance() {
+        SavedFragment fragment = new SavedFragment();
+        return fragment;
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_piece_view);
+    }
 
-        Intent intent = getIntent();
-        list = intent.getStringArrayListExtra("pieces");
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        final View view =  inflater.inflate(R.layout.fragment_saved, container, false);
+
+        MainActivity activity = (MainActivity) getActivity();
+        list = activity.getList();
+
         if(!list.isEmpty()) {
-            findViewById(android.R.id.empty).setVisibility(View.GONE);
+            view.findViewById(android.R.id.empty).setVisibility(View.GONE);
         }
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, list);
 
-        listView = (ListView) findViewById(android.R.id.list);
+        listView = (ListView) view.findViewById(android.R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ListPiecesView.this, ShowPiece.class);
+                Intent intent = new Intent(getActivity(), ShowPiece.class);
                 intent.putStringArrayListExtra("pieces", list);
                 intent.putExtra("piece", listView.getItemAtPosition(position).toString());
                 startActivity(intent);
@@ -45,5 +58,7 @@ public class ListPiecesView extends AppCompatActivity {
 
         /** Setting the adapter to the ListView */
        listView.setAdapter(adapter);
+
+       return view;
     }
 }

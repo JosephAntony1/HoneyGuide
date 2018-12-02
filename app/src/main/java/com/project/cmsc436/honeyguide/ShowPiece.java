@@ -65,10 +65,10 @@ public class ShowPiece extends AppCompatActivity {
     }
 
     public void onGarbageAction(MenuItem m) {
-        list.remove(item);
+        /*list.remove(item);
         Intent intent = new Intent(ShowPiece.this, ListPiecesView.class);
         intent.putStringArrayListExtra("pieces", list);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
 
