@@ -27,6 +27,8 @@ import io.chirp.connect.models.ChirpError;
 
 import static android.support.v4.content.ContextCompat.*;
 
+import android.content.Intent;
+
 public class HomeFragment extends Fragment {
 
     public static HomeFragment newInstance() {
@@ -50,6 +52,15 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 MainActivity activity = (MainActivity) getActivity();
                 activity.addItem();
+            }
+        });
+
+        Button test = (Button) view.findViewById(R.id.btnShow);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity activity = (MainActivity) getActivity();
+                activity.launchDefaultPiece();
             }
         });
 
