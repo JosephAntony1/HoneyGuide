@@ -3,6 +3,7 @@ package com.project.cmsc436.honeyguide;
 import java.util.ArrayList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -13,9 +14,8 @@ import android.widget.ListView;
 import android.view.ViewGroup;
 
 public class SavedFragment extends Fragment {
-
-
-    ArrayList<String> list = new ArrayList<String>();
+    MainActivity activity;
+    ArrayList<String> list = new ArrayList<>();
     ArrayAdapter<String> adapter;
     ListView listView;
 
@@ -35,7 +35,7 @@ public class SavedFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_saved, container, false);
 
-        MainActivity activity = (MainActivity) getActivity();
+        activity = (MainActivity) getActivity();
         list = activity.getList();
 
         if(!list.isEmpty()) {
@@ -48,10 +48,10 @@ public class SavedFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ShowPiece.class);
-                intent.putStringArrayListExtra("pieces", list);
-                intent.putExtra("piece", listView.getItemAtPosition(position).toString());
-                startActivity(intent);
+                activity.setItem(listView.getItemAtPosition(position).toString());
+                FragmentTransaction homeTransaction = activity.getSupportFragmentManager().beginTransaction();
+                homeTransaction.replace(R.id.frame_layout, PieceFragment.newInstance());
+                homeTransaction.commit();
             }
         });
 

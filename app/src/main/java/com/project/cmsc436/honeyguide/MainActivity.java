@@ -23,6 +23,7 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
     /** Items entered by the user is stored in this ArrayList variable */
     ArrayList<String> list = new ArrayList<String>();
+    private String item;
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
     private String TAG = "Honeyguide-Debug: ";
 
@@ -82,6 +83,14 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<String> getList() {
         return list;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public void setItem(String item) {
+        this.item = item;
     }
 
     public void clearData() {
