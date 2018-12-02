@@ -7,15 +7,5 @@
         app:showAsAction="ifRoom"
         android:title="Share">
     </item>
-
-
-    <item
-        android:id="@+id/piece_garbage_button"
-        android:icon="@drawable/garbage"
-        android:onClick="onGarbageAction"
-        app:showAsAction="ifRoom"
-        android:title="Garbage">
-    </item>
-
 </menu>
 

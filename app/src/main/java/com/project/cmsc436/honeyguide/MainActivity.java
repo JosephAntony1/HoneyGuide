@@ -120,4 +120,8 @@ public class MainActivity extends AppCompatActivity {
         Intent i= new Intent(getApplicationContext(), ChirpService.class);
         stopService(i);
     }
+
+    public void onGarbageAction(MenuItem m) {
+
+    }
 }
