@@ -128,7 +128,8 @@ public class MicTest extends AppCompatActivity {
                     soundPool.stop(streamID);
                     chirpConnect.stop();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Aw :(", Toast.LENGTH_SHORT).show();
+                    TextView v = (TextView) findViewById(R.id.result);
+                    v.setText("Your microphone doesn't seem to be working. Check your phone settings or try again later.");
                 }
 
             }
