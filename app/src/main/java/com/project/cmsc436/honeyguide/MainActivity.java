@@ -168,8 +168,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void showItems() {
         Log.i("i1", "entered showItems()");
-        Intent intent = new Intent(this, ListPiecesView.class);
-        intent.putStringArrayListExtra("pieces", list);
+        Intent intent = new Intent(this, MicTest.class);
+        //Intent intent = new Intent(this, ListPiecesView.class);
+        //intent.putStringArrayListExtra("pieces", list);
         startActivity(intent);
     }
 
