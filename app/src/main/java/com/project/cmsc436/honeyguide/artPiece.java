@@ -9,12 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.*;
 import android.content.SharedPreferences;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class artPiece extends AppCompatActivity {
 
@@ -57,7 +57,7 @@ public class artPiece extends AppCompatActivity {
         //update the view
         //image downloading
         String date_artist_str = date+", "+artist;
-        art.setImageDrawable(LoadImageFromWebOperations(url));
+        Picasso.with(getApplicationContext()).load(url).into(art);
         title.setText(name);
         date_artist.setText(date_artist_str);
         p1.setText(description1);
@@ -72,15 +72,6 @@ public class artPiece extends AppCompatActivity {
         pieces.put("3","The Fighting Temeraire");
     }
 
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
 
 }
