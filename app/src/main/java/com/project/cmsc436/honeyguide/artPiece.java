@@ -71,7 +71,4 @@ public class artPiece extends AppCompatActivity {
         pieces.put("2","A Young Woman standing at a Virginal");
         pieces.put("3","The Fighting Temeraire");
     }
-
-
-
 }
