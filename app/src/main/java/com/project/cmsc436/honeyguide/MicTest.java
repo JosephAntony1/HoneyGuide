@@ -122,13 +122,13 @@ public class MicTest extends AppCompatActivity {
             public void onReceived(byte[] payload, byte channel) {
                 if(payload!=null) {
                     Log.v(TAG, "This is called when a payload has been received \"" + new String(payload) + "\" on channel: " + channel);
-                    Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_SHORT).show();
                     TextView v = (TextView) findViewById(R.id.result);
                     v.setText(new String(payload));
                     soundPool.stop(streamID);
-
+                    chirpConnect.stop();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Aw :(", Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(), "Aw :(", Toast.LENGTH_SHORT).show();
                 }
 
             }
