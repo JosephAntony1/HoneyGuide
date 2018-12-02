@@ -31,25 +31,79 @@
         android:minHeight="?attr/actionBarSize"
         app:titleTextColor="@android:color/white"></android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/piece"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="271dp"
-        android:text="@string/app_name" />
 
     <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="292dp"
-        android:layout_height="244dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="9dp"
-        android:layout_marginBottom="342dp"
+        android:id="@+id/imageView"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="60dp"
         android:contentDescription="@string/app_name"
         android:src="@drawable/wip" />
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="@string/artPiece_1_button_str"
+        android:layout_below="@+id/imageView"/>
+
+    <TextView
+        android:id="@+id/Date_Artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:textSize="18sp"
+        android:text="@string/artPiece_1_button_str"
+        android:layout_below="@+id/Title"/>
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#1e90ff"
+        android:layout_below="@+id/Date_Artist"/>
+
+    <TextView
+        android:id="@+id/Description1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="15sp"
+        android:text="@string/artPiece_1_button_str"
+        android:layout_below="@+id/separator"/>
+
+    <TextView
+        android:id="@+id/Description2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="15sp"
+        android:text="@string/artPiece_1_button_str"
+        android:layout_below="@+id/Description1"/>
+
+    <TextView
+        android:id="@+id/Description3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textSize="15sp"
+        android:text="@string/artPiece_1_button_str"
+        android:layout_below="@+id/Description2"/>
+
+
 
 
 </RelativeLayout>
