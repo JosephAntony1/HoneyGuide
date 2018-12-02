@@ -14,6 +14,9 @@
     <string name="shareButton">Share</string>
     <string name="delete">Delete</string>
 
+    <!-- Toolbar Titles -->
+    <string name="savedPieces">Saved Pieces</string>
+
     <string name="artPiece_1_button_str">Test button for getting art piece 1</string>
     <string name="artPiece_2_button_str">Test button for getting art piece 2</string>
     <string name="artPiece_3_button_str">Test button for getting art piece 3</string>

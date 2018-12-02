@@ -2,6 +2,8 @@ package com.project.cmsc436.honeyguide;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.support.v7.widget.ShareActionProvider;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class ShowPiece extends AppCompatActivity {
@@ -19,8 +22,8 @@ public class ShowPiece extends AppCompatActivity {
     private TextView textView;
     private String item;
     private ImageView imageView;
-    private ArrayList<String> list = new ArrayList<String>();
-    private ShareActionProvider mShareActionProvider;
+  //  private ArrayList<String> list = new ArrayList<String>();
+  //  private HashMap<String, String> piece;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +31,7 @@ public class ShowPiece extends AppCompatActivity {
         setContentView(R.layout.activity_show_piece);
 
         Intent intent = getIntent();
-        list = intent.getStringArrayListExtra("pieces");
+       // list = intent.getStringArrayListExtra("pieces");
 
         item = intent.getStringExtra("piece");
 
@@ -40,10 +43,6 @@ public class ShowPiece extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
-
 
     }
     @Override
@@ -64,12 +63,19 @@ public class ShowPiece extends AppCompatActivity {
         startActivity(Intent.createChooser(shareIntent, "Share using"));
     }
 
-    public void onGarbageAction(MenuItem m) {
-        /*list.remove(item);
-        Intent intent = new Intent(ShowPiece.this, ListPiecesView.class);
+    /*public void onGarbageAction(MenuItem m) {
+        list.remove(item);*/
+        /*Intent intent = new Intent(this, SavedFragment.class);
         intent.putStringArrayListExtra("pieces", list);
         startActivity(intent);*/
-    }
+/*
+        MainActivity activity = (MainActivity) getActivity();
+        activity.addItem();
 
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.add(SavedFragment.newInstance(), null);
+        ft.commit();
+    }
+*/
 
 }

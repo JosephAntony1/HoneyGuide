@@ -29,7 +29,9 @@
         android:layout_marginTop="0dp"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@android:color/white"></android.support.v7.widget.Toolbar>
+        app:itemIconTint="@color/white"
+        app:titleTextColor="@android:color/white"
+        app:menu="@menu/pieces_menu_fragment"/>
 
 
     <ImageView
