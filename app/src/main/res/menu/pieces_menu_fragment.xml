@@ -1,12 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/shareButton"
+        android:id="@+id/piece_share_button"
         android:icon="@drawable/share"
-        android:title="@string/shareButton">
+        android:onClick="onShareAction"
+        app:showAsAction="ifRoom"
+        android:title="Share">
     </item>
+
+
+    <item
+        android:id="@+id/piece_garbage_button"
+        android:icon="@drawable/garbage"
+        android:onClick="onGarbageAction"
+        app:showAsAction="ifRoom"
+        android:title="Garbage">
+    </item>
+
 </menu>
-
-
 
