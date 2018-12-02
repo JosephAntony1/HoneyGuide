@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -14,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".WelcomePage"
             android:label="@string/welcome">
@@ -29,16 +31,21 @@
         <activity
             android:name=".artPiece"
             android:label="@string/artPiece" />
+
         <activity
             android:name=".MainActivity"
-            android:label="@string/add_temp" />
-        <activity
-            android:name=".ListPiecesView"
-            android:label="@string/list_pieces" />
+            android:label="@string/add_temp"/>
         <activity
             android:name=".ShowPiece"
-            android:label="@string/show_piece"></activity>
-        <activity android:name=".MicTest"></activity>
+            android:label="@string/show_piece">
+        </activity>
+
+        <service android:name=".ChirpService"></service>
     </application>
+
+
+
+
+
 
 </manifest>

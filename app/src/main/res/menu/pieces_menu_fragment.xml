@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/piece_share_button"
+        android:icon="@drawable/share"
+        android:onClick="onShareAction"
+        app:showAsAction="ifRoom"
+        android:title="Share">
+    </item>
+
+
+    <item
+        android:id="@+id/piece_garbage_button"
+        android:icon="@drawable/garbage"
+        android:onClick="onGarbageAction"
+        app:showAsAction="ifRoom"
+        android:title="Garbage">
+    </item>
+
+</menu>
+

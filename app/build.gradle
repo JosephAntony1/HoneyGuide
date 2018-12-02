@@ -29,6 +29,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'io.chirp.connect:chirp-connect-release@aar'
     implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:preference-v7:28.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
