@@ -40,16 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         return true;
                     }
         });
-
-        findPreference(getString(R.string.settings_about)).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.frame_layout, AboutFragment.newInstance());
-                        transaction.commit();
-                        return true;
-                    }
-                });
+        Intent i= new Intent(getContext(), ChirpService.class);
+        getActivity().stopService(i);
     }
 }
