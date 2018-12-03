@@ -116,11 +116,6 @@ public class ChirpService extends Service {
         chirpConnect.setListener(connectEventListener);
         chirpConnect.start();
 
-        PowerManager pm = (PowerManager)getApplicationContext().getSystemService(
-                getApplicationContext().POWER_SERVICE);
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
-        wl.acquire();
-
         return Service.START_STICKY;
     }
 
@@ -142,10 +137,6 @@ public class ChirpService extends Service {
             e.printStackTrace();
         }
 
-        PowerManager pm = (PowerManager)getApplicationContext().getSystemService(
-                getApplicationContext().POWER_SERVICE);
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
-        wl.release();
     }
 
 }
