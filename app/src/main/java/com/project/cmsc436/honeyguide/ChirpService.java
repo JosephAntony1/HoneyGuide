@@ -2,15 +2,24 @@ package com.project.cmsc436.honeyguide;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,7 +40,7 @@ import io.chirp.connect.models.ChirpError;
 public class ChirpService extends Service {
 
     private String TAG = "Honeyguide-Debug: ";
-    private String currentPiece = "";
+    public static String currentPiece = "";
     private ConnectEventListener connectEventListener;
     private ChirpConnect chirpConnect;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -87,16 +96,28 @@ public class ChirpService extends Service {
 
 
                     if (!id.equals(currentPiece)) {
-/*                        Intent activateArtPiece = new Intent(getApplicationContext(), MainActivity.class);
-                        activateArtPiece.putExtra("num", id);
-                        activateArtPiece.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(activateArtPiece);*/
 
-                        Intent intent = new Intent(MainActivity.RECEIVER_INTENT);
-                        intent.putExtra(MainActivity.RECEIVER_MESSAGE, id);
-                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                        if (MainActivity.isVisible) {
+                            Intent intent = new Intent(MainActivity.RECEIVER_INTENT);
+                            intent.putExtra(MainActivity.RECEIVER_MESSAGE, id);
+                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("data", id);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
 
                         currentPiece = id;
+
+                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        // Vibrate for 500 milliseconds
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            v.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                        } else {
+                            //deprecated in API 26
+                            v.vibrate(100);
+                        }
 
                     }
                 }
@@ -116,6 +137,46 @@ public class ChirpService extends Service {
         chirpConnect.setListener(connectEventListener);
         chirpConnect.start();
 
+        Intent i = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i,0);
+
+ /*       NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
+                .setSmallIcon(R.drawable.robin)
+                .setContentTitle("Honeyguide")
+                .setContentText("Honeyguide is listening for chirps!")
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .setVibrate(new long[]{500, 500, 500, 500}
+                );
+
+        Notification n = builder.build();
+
+        startForeground(MainActivity.notificationID, n);*/
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent p=PendingIntent.getActivity(this,0,notificationIntent,0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
+                .setSmallIcon(R.drawable.robin)
+                .setContentTitle("Honeyguide")
+                .setContentText("Honeyguide is listening for chirps!")
+                .setContentIntent(pendingIntent)
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .setVibrate(new long[]{ 0 });
+        Notification notification=builder.build();
+        if(Build.VERSION.SDK_INT>=26) {
+            NotificationChannel channel = new NotificationChannel("honeyguide", "Honeyguide", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Honeyguide Mic Service");
+            channel.setVibrationPattern(new long[]{ 0 });
+            channel.enableVibration(true);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
+        startForeground(MainActivity.notificationID, notification);
+
+
         return Service.START_STICKY;
     }
 
@@ -131,6 +192,8 @@ public class ChirpService extends Service {
         Log.i(TAG, "STOPPED SERVICE!");
         super.onDestroy();
         chirpConnect.stop();
+        currentPiece = "";
+        stopForeground(true);
         try {
             chirpConnect.close();
         } catch (Exception e) {
