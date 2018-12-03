@@ -26,13 +26,16 @@
     <string name="saveArtPiece_button_str">Save</string>
 
     <string name="list_pieces">List Pieces (WIP)</string>
-    <string name="add_temp">Add Piece (Test Activity)</string>
+    <!--<string name="add_temp">Add Piece (Test Activity)</string>-->
     <string name="show_piece">Show Piece (WIP)</string>
 
     <string name="hintTxtItem">Enter an item here ...</string>
     <string name="lblBtnAdd">Add Item</string>
     <string name="lblBtnShow">Show Pieces</string>
     <string name="txtEmpty">List is empty</string>
+
+    <string name="saveIcon">Save the Art Piece</string>
+    <string name="shareIcon">Share the Art Piece</string>
 
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>

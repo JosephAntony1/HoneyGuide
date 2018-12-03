@@ -28,7 +28,6 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/add_temp"
             android:launchMode="singleInstance"
             />
 

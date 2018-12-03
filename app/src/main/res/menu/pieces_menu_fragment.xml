@@ -5,7 +5,14 @@
         android:icon="@drawable/share"
         android:onClick="onShareAction"
         app:showAsAction="ifRoom"
-        android:title="Share">
+        android:title="@string/shareIcon">
+    </item>
+    <item
+        android:id="@+id/piece_save_button"
+        android:icon="@drawable/save"
+        android:onClick="onSaveAction"
+        app:showAsAction="ifRoom"
+        android:title="@string/saveIcon">
     </item>
 </menu>
 

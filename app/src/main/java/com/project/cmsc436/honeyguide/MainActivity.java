@@ -142,6 +142,12 @@ public class MainActivity extends AppCompatActivity {
         edit.setText("");
     }
 
+    public void saveArtPiece() {
+        Log.i("i", "entered saveArtPiece()");
+        String name = pieces.get(piece);
+        list.add(name);
+    }
+
    /* public void selectItem(String item) {
         selectList.add(item);
     }
@@ -260,8 +266,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*public void onGarbageAction(MenuItem m) {
-        selectList.clear();
-        SavedFragment.newInstance();
-    }*/
+    public void onShareAction(MenuItem m) {
+        Log.i(TAG,"Enter the onShareAction");
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String shareBody = "Art piece title";
+        String shareSubject = "Art piece subject";
+
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+
+        startActivity(Intent.createChooser(shareIntent, "Share using"));
+    }
+
+    public void onSaveAction(MenuItem m) {
+       Log.i(TAG,"Enter the onSaveAction");
+       saveArtPiece();
+       String name = pieces.get(piece);
+       Toast.makeText(getApplicationContext(), "The art piece: "+name+"is saved!", Toast.LENGTH_SHORT).show();
+    }
 }
