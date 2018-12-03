@@ -164,15 +164,16 @@ public class MainActivity extends AppCompatActivity {
 
             String id = getIntent().getStringExtra("data");
             Log.i(TAG, getIntent().getExtras() + " WAS RECEIVED");
+
             if(id!= null){
                 setPiece(id);
                 FragmentTransaction pieceTransaction = getSupportFragmentManager().beginTransaction();
                 pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
                 pieceTransaction.commit();
             }
+                Intent i = new Intent(getApplicationContext(), ChirpService.class);
+                startService(i);
 
-            Intent i= new Intent(getApplicationContext(), ChirpService.class);
-            startService(i);
         }
 
     }
@@ -257,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.i(TAG, "onResume");
         isVisible = true;
-
     }
 
 
@@ -331,4 +331,5 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
         ChirpService.currentPiece = "";
     }
+
 }

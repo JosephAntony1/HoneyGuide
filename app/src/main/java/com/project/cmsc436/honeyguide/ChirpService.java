@@ -38,7 +38,6 @@ import io.chirp.connect.models.ChirpError;
 
 
 public class ChirpService extends Service {
-
     private String TAG = "Honeyguide-Debug: ";
     public static String currentPiece = "";
     private ConnectEventListener connectEventListener;
@@ -49,7 +48,6 @@ public class ChirpService extends Service {
     public int onStartCommand(final Intent intent, int flags, int startId) {
 
         Log.i(TAG, "STARTED SERVICE!");
-
         if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
             Log.d(TAG,"called to cancel service");
             stopSelf();
