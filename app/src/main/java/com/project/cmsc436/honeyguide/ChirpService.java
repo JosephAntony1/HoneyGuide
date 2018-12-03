@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -114,6 +115,12 @@ public class ChirpService extends Service {
 
         chirpConnect.setListener(connectEventListener);
         chirpConnect.start();
+
+        PowerManager pm = (PowerManager)getApplicationContext().getSystemService(
+                getApplicationContext().POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+        wl.acquire();
+
         return Service.START_STICKY;
     }
 
@@ -126,6 +133,7 @@ public class ChirpService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.i(TAG, "STOPPED SERVICE!");
         super.onDestroy();
         chirpConnect.stop();
         try {
@@ -133,10 +141,11 @@ public class ChirpService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    public interface ServiceCallbacks {
-        void doSomething();
+        PowerManager pm = (PowerManager)getApplicationContext().getSystemService(
+                getApplicationContext().POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+        wl.release();
     }
 
 }
