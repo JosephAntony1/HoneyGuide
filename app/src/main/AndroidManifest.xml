@@ -28,7 +28,10 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/add_temp"/>
+            android:label="@string/add_temp"
+            android:launchMode="singleInstance"
+            />
+
         <activity
             android:name=".ShowPiece"
             android:label="@string/show_piece">
