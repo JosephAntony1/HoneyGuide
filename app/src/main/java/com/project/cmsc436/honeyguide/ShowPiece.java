@@ -51,16 +51,4 @@ public class ShowPiece extends AppCompatActivity {
         return true;
     }
 
-    public void onShareAction(MenuItem m) {
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        String shareBody = item;
-        String shareSubject = item;
-
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
-
-        startActivity(Intent.createChooser(shareIntent, "Share using"));
-    }
-
 }
