@@ -181,7 +181,7 @@ public class ChirpService extends Service {
         startForeground(MainActivity.notificationID, notification);
 
 
-        return Service.START_STICKY;
+        return Service.START_REDELIVER_INTENT;
     }
 
     @Nullable
