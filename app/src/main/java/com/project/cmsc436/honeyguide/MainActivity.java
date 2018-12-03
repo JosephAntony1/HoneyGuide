@@ -181,7 +181,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveArtPiece() {
         Log.i("i", "entered saveArtPiece()");
+        //save to the listivew
         list.add(getPiece());
+        //update local list
     }
 
     public ArrayList<String> getList() {
@@ -300,8 +302,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSaveAction(MenuItem m) {
        Log.i(TAG,"Enter the onSaveAction");
-       saveArtPiece();
-       Toast.makeText(getApplicationContext(), "Saved art piece: "+getPiece(), Toast.LENGTH_SHORT).show();
+
+       //if the art piece has already saved before
+        if(list.contains(getPiece())){
+            Toast.makeText(getApplicationContext(), "Already saved art piece: "+getPiece(), Toast.LENGTH_SHORT).show();
+        }else{
+            //new added art piece
+            saveArtPiece();
+            Toast.makeText(getApplicationContext(), "Saved art piece: "+getPiece(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void loadPieces(Map<String,String> pieces){

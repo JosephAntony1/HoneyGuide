@@ -70,7 +70,7 @@ public class SavedFragment extends Fragment {
                 Log.d(TAG,"Clicked on saved piece: "+list.get(position));
                 activity.setPiecebyName(list.get(position));
                 FragmentTransaction pieceTransaction = activity.getSupportFragmentManager().beginTransaction();
-                pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
+                pieceTransaction.replace(R.id.frame_layout, new SavedPieceFragment());
                 pieceTransaction.commit();
             }
         });
