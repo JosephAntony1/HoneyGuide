@@ -84,6 +84,7 @@ public class ChirpService extends Service {
 
                     Intent activateArtPiece = new Intent(getApplicationContext(),artPiece.class);
                     activateArtPiece.putExtra("num",id);
+                    activateArtPiece.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(activateArtPiece);
                 }
             }
