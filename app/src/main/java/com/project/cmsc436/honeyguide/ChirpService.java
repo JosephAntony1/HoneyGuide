@@ -79,37 +79,13 @@ public class ChirpService extends Service {
             @Override
             public void onReceived(byte[] payload, byte channel) {
                 if(payload!=null) {
-                    Log.v(TAG, "This is called when a payload has been received \"" + new String(payload) + "\" on channel: " + channel);
+                    String id = new String(payload);
+                    Log.v(TAG, "This is called when a payload has been received \"" + id + "\" on channel: " + channel);
 
-                    db.collection("art-pieces").document(new String(payload))
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot document = task.getResult();
-                                        if (document.exists()) {
-                                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                                            new Toast(getApplicationContext()).makeText(getApplicationContext(), (String) document.getData().get("Full title"), Toast.LENGTH_LONG).show();
-
-                                            Intent i = new Intent(getApplicationContext(), ShowPiece.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            i.putExtra("data", (HashMap) document.getData());
-
-                                            startActivity(i);
-
-                                        } else {
-                                            Log.d(TAG, "No such document");
-                                            new Toast(getApplicationContext()).makeText(getApplicationContext(), "No such document", Toast.LENGTH_LONG).show();
-
-                                        }
-                                    } else {
-                                        Log.d(TAG, "get failed with ", task.getException());
-                                    }
-                                }
-                            });
-
+                    Intent activateArtPiece = new Intent(getApplicationContext(),artPiece.class);
+                    activateArtPiece.putExtra("num",id);
+                    activateArtPiece.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(activateArtPiece);
                 }
             }
 
@@ -127,7 +103,7 @@ public class ChirpService extends Service {
 
         chirpConnect.setListener(connectEventListener);
         chirpConnect.start();
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
 

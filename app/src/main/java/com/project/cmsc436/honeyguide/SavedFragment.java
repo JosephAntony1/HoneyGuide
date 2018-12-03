@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +28,7 @@ public class SavedFragment extends Fragment {
 
 
     ArrayList<String> list = new ArrayList<String>();
-    ArrayList<String> selectList = new ArrayList<String>();
+    //ArrayList<String> selectList = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ListView listView;
 
@@ -65,10 +66,14 @@ public class SavedFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), ShowPiece.class);
+                activity.setPiece((String) listView.getItemAtPosition(position));
+                FragmentTransaction pieceTransaction = activity.getSupportFragmentManager().beginTransaction();
+                pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
+                pieceTransaction.commit();
+                /*Intent intent = new Intent(getActivity(), ShowPiece.class);
                 intent.putStringArrayListExtra("pieces", list);
                 intent.putExtra("piece", listView.getItemAtPosition(position).toString());
-                startActivity(intent);
+                startActivity(intent);*/
             }
         });
 
