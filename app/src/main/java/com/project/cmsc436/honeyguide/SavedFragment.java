@@ -89,7 +89,7 @@ public class SavedFragment extends Fragment {
                 // Add the buttons
                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getActivity(), "Deleteing", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Deleting", Toast.LENGTH_LONG).show();
                         adapter.remove(list.get(pos));
                         adapter.notifyDataSetChanged();
 
