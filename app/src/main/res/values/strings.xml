@@ -13,7 +13,8 @@
     <!--Button on the Saved Art Piece view (ShowPiece.java)-->
     <string name="shareButton">Share</string>
     <string name="delete">Delete</string>
-
+    <string name="dialog_message">Are you sure you want to delete</string>
+    <string name="dialog_title">Delete Saved Item</string>
     <!-- Toolbar Titles -->
     <string name="savedPieces">Saved Pieces</string>
 

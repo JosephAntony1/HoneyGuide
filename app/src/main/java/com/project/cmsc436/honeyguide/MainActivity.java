@@ -35,6 +35,7 @@ import android.content.SharedPreferences;
 public class MainActivity extends AppCompatActivity {
     /** Items entered by the user is stored in this ArrayList variable */
     ArrayList<String> list = new ArrayList<String>();
+   // ArrayList<String> selectList = new ArrayList<String>();
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
     private String TAG = "Honeyguide-Debug: ";
     private final String COLLECTION_NAME = "art_pieces ";
@@ -126,6 +127,14 @@ public class MainActivity extends AppCompatActivity {
         edit.setText("");
     }
 
+   /* public void selectItem(String item) {
+        selectList.add(item);
+    }
+
+    public ArrayList<String> getSelectList() {
+        return selectList;
+    }
+*/
     //testing purpose
     public void launchDefaultPiece(){
         startActivity(new Intent(MainActivity.this,defaultPiece.class));
@@ -172,7 +181,8 @@ public class MainActivity extends AppCompatActivity {
         stopService(i);
     }
 
-    public void onGarbageAction(MenuItem m) {
-
-    }
+    /*public void onGarbageAction(MenuItem m) {
+        selectList.clear();
+        SavedFragment.newInstance();
+    }*/
 }

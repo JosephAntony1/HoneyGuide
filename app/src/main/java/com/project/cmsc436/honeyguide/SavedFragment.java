@@ -1,24 +1,33 @@
 package com.project.cmsc436.honeyguide;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
+
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.content.Intent;
+import android.widget.Button;
 import android.widget.ListView;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 public class SavedFragment extends Fragment {
 
 
     ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> selectList = new ArrayList<String>();
     ArrayAdapter<String> adapter;
     ListView listView;
 
@@ -31,6 +40,7 @@ public class SavedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setHasOptionsMenu(true);
     }
 
     @Override
@@ -38,15 +48,12 @@ public class SavedFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_saved, container, false);
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        }
-
-
-        MainActivity activity = (MainActivity) getActivity();
+        /*Toolbar toolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        */
+        final MainActivity activity = (MainActivity) getActivity();
         list = activity.getList();
-
+        //selectList = activity.getSelectList();
 
         if(!list.isEmpty()) {
             view.findViewById(android.R.id.empty).setVisibility(View.GONE);
@@ -68,18 +75,41 @@ public class SavedFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                view.findViewById(R.id.piece_garbage_button).setVisibility(View.VISIBLE);
-                //list.remove(position);
-                //recreate();
+
+                final int pos = position;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+
+                // Add the buttons
+                builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Toast.makeText(getActivity(), "Deleteing", Toast.LENGTH_LONG).show();
+                        adapter.remove(list.get(pos));
+                        adapter.notifyDataSetChanged();
+
+                    }
+                });
+                builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+
+                        //Do nothing?
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
             }
         });
 
-
-        /** Setting the adapter to the ListView */
        listView.setAdapter(adapter);
-
        return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.saved_pieces_menu, menu);
     }
 
 
