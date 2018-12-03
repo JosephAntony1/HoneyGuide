@@ -44,6 +44,7 @@ public class ChirpService extends Service {
     private ChirpConnect chirpConnect;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private String ACTION_STOP_SERVICE = "halt";
+    private String notificationText = "Honeyguide is listening for chirps!";
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
 
@@ -109,7 +110,7 @@ public class ChirpService extends Service {
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         }
-
+                        notificationText = "Honeyguide found a piece!";
                         currentPiece = id;
 
                         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -154,13 +155,20 @@ public class ChirpService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
                 .setSmallIcon(R.drawable.robin)
                 .setContentTitle("Honeyguide")
-                .setContentText("Honeyguide is listening for chirps!")
+                .setContentText(notificationText)
                 .setContentIntent(p)
                 .setOngoing(true)
                 .setAutoCancel(false)
                 .setVibrate(new long[]{ 0 })
                 .addAction(R.drawable.ic_clear, "Stop", pStopSelf);;
-        Notification notification=builder.build();
+
+        if(intent.getStringExtra("piece")!= null){
+            builder.setContentText("Found " + intent.getStringExtra("piece")+"!");
+        }
+
+            Notification notification=builder.build();
+
+
 
         if(Build.VERSION.SDK_INT>=26) {
             NotificationChannel channel = new NotificationChannel("honeyguide", "Honeyguide", NotificationManager.IMPORTANCE_DEFAULT);

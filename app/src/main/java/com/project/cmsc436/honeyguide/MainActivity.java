@@ -164,14 +164,15 @@ public class MainActivity extends AppCompatActivity {
 
             String id = getIntent().getStringExtra("data");
             Log.i(TAG, getIntent().getExtras() + " WAS RECEIVED");
+            Intent i = new Intent(getApplicationContext(), ChirpService.class);
 
             if(id!= null){
                 setPiece(id);
                 FragmentTransaction pieceTransaction = getSupportFragmentManager().beginTransaction();
                 pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
                 pieceTransaction.commit();
+                i.putExtra("piece",pieces.get(id ));
             }
-                Intent i = new Intent(getApplicationContext(), ChirpService.class);
                 startService(i);
 
         }
