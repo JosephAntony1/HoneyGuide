@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.util.Log;
@@ -36,7 +38,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import android.content.SharedPreferences;
-
+import android.widget.Toast;
 
 
 /** Note that here we are inheriting ListActivity class instead of Activity class **/
@@ -173,8 +175,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearData() {
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        activityManager.clearApplicationUserData();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+
+        // Add the buttons
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                for(int i = 1; i <= 3; i++){
+                    String name = pieces.get(Integer.toString(i));
+                    getSharedPreferences(name, Context.MODE_PRIVATE).edit().clear().apply();
+
+                }
+                ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                activityManager.clearApplicationUserData();
+
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+
+                //Do nothing?
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
