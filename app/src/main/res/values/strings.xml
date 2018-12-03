@@ -65,4 +65,7 @@
 
     <string name="chirp_application_key">6A7Ab5AADf29C8B8F1c0cdC02</string>
     <string name="chirp_client_secret">08ED5e8Fb2bfEC0BEeCDa8bc5Ea0B4EafB1A48BECd151eCdEa</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
