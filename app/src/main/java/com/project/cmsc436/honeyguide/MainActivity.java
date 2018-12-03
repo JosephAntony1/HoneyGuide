@@ -312,7 +312,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed Called");
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, HomeFragment.newInstance());
+        transaction.commit();
+
     }
 }
