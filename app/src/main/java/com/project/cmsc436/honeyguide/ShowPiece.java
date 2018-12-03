@@ -63,19 +63,4 @@ public class ShowPiece extends AppCompatActivity {
         startActivity(Intent.createChooser(shareIntent, "Share using"));
     }
 
-    /*public void onGarbageAction(MenuItem m) {
-        list.remove(item);*/
-        /*Intent intent = new Intent(this, SavedFragment.class);
-        intent.putStringArrayListExtra("pieces", list);
-        startActivity(intent);*/
-/*
-        MainActivity activity = (MainActivity) getActivity();
-        activity.addItem();
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(SavedFragment.newInstance(), null);
-        ft.commit();
-    }
-*/
-
 }
