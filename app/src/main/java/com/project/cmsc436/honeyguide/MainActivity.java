@@ -119,12 +119,12 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    public void addItem() {
-        Log.i("i", "entered addItem()");
-        EditText edit = (EditText) findViewById(R.id.txtItem);
-        list.add(edit.getText().toString());
-        edit.setText("");
-    }
+//    public void addItem() {
+//        Log.i("i", "entered addItem()");
+//        EditText edit = (EditText) findViewById(R.id.txtItem);
+//        list.add(edit.getText().toString());
+//        edit.setText("");
+//    }
 
     //testing purpose
     public void launchDefaultPiece(){
