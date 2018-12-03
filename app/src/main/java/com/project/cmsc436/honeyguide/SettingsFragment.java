@@ -39,5 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         return true;
                     }
         });
+        Intent i= new Intent(getContext(), ChirpService.class);
+        getActivity().stopService(i);
     }
 }

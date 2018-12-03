@@ -45,6 +45,7 @@ public class PieceFragment extends Fragment {
         //set up id - art piece name correlation
         loadPieces(activity.getPieces());
 
+
         //fetch the id received
         String id = activity.getPiece();
         String name = activity.getPieces().get(id);

@@ -1,13 +1,17 @@
 package com.project.cmsc436.honeyguide;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,14 +31,13 @@ import io.chirp.connect.models.ChirpError;
 public class ChirpService extends Service {
 
     private String TAG = "Honeyguide-Debug: ";
-
+    private String currentPiece = "";
     private ConnectEventListener connectEventListener;
     private ChirpConnect chirpConnect;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
 
         Log.i(TAG, "STARTED SERVICE!");
 
@@ -78,17 +81,26 @@ public class ChirpService extends Service {
 
             @Override
             public void onReceived(byte[] payload, byte channel) {
-                if(payload!=null) {
+                if (payload != null) {
                     String id = new String(payload);
                     Log.v(TAG, "This is called when a payload has been received \"" + id + "\" on channel: " + channel);
 
-                    Intent activateArtPiece = new Intent(getApplicationContext(),artPiece.class);
-                    activateArtPiece.putExtra("num",id);
-                    activateArtPiece.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(activateArtPiece);
+
+                    if (!id.equals(currentPiece)) {
+/*                        Intent activateArtPiece = new Intent(getApplicationContext(), MainActivity.class);
+                        activateArtPiece.putExtra("num", id);
+                        activateArtPiece.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(activateArtPiece);*/
+
+                        Intent intent = new Intent(MainActivity.RECEIVER_INTENT);
+                        intent.putExtra(MainActivity.RECEIVER_MESSAGE, id);
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
+                        currentPiece = id;
+
+                    }
                 }
             }
-
             @Override
             public void onStateChanged(byte oldState, byte newState) {
                 Log.v(TAG, "This is called when the SDK state has changed " + oldState + " -> " + newState);
@@ -103,6 +115,12 @@ public class ChirpService extends Service {
 
         chirpConnect.setListener(connectEventListener);
         chirpConnect.start();
+
+        PowerManager pm = (PowerManager)getApplicationContext().getSystemService(
+                getApplicationContext().POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+        wl.acquire();
+
         return Service.START_STICKY;
     }
 
@@ -115,6 +133,7 @@ public class ChirpService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.i(TAG, "STOPPED SERVICE!");
         super.onDestroy();
         chirpConnect.stop();
         try {
@@ -122,5 +141,11 @@ public class ChirpService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        PowerManager pm = (PowerManager)getApplicationContext().getSystemService(
+                getApplicationContext().POWER_SERVICE);
+        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+        wl.release();
     }
+
 }
