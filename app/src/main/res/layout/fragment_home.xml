@@ -32,14 +32,18 @@
         <!--android:layout_toRightOf="@id/txtItem"-->
         <!--android:text="@string/lblBtnShow" />-->
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Listening for chirps..."
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        />
-
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@android:color/white"
+        app:title="Listening for chirps..."></android.support.v7.widget.Toolbar>
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animation_view"
         android:layout_width="268dp"

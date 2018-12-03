@@ -1,7 +1,13 @@
+
 <android.support.v7.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
     <android.support.v7.preference.PreferenceCategory>
+
 
         <android.support.v7.preference.Preference
             android:key="@string/settings_clear"
