@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.Preference;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,25 +20,39 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         // Load the Preferences from the XML file
         addPreferencesFromResource(R.xml.fragment_settings);
 
-        findPreference(getString(R.string.settings_clear)).setOnPreferenceClickListener(
+        findPreference(getString(R.string.settings_mic)).setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        activity.clearData();
+                        Intent i = new Intent(activity.getApplicationContext(), ChirpService.class);
+                        activity.stopService(i);
+
+                        FragmentTransaction settingsTransaction = activity.getSupportFragmentManager().beginTransaction();
+                        settingsTransaction.replace(R.id.frame_layout, MicFragment.newInstance());
+                        settingsTransaction.commit();
                         return true;
                     }
                 });
 
+        findPreference(getString(R.string.settings_clear)).setOnPreferenceClickListener(
+            new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    activity.clearData();
+                    return true;
+                }
+            });
+
         findPreference(getString(R.string.settings_intro)).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        PrefManager prefManager = new PrefManager(activity);
-                        prefManager.setFirstTimeLaunch(true);
-                        Intent newIntent = new Intent(activity, WelcomePage.class);
-                        startActivity(newIntent);
-                        return true;
-                    }
+            new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    PrefManager prefManager = new PrefManager(activity);
+                    prefManager.setFirstTimeLaunch(true);
+                    Intent newIntent = new Intent(activity, WelcomePage.class);
+                    startActivity(newIntent);
+                    return true;
+                }
         });
     }
 }
