@@ -60,6 +60,7 @@
 
     <string name="settings_intro">settings_intro</string>
     <string name="settings_clear">settings_clear</string>
+    <string name="settings_about">settings_about</string>
 
     <!--mic test strings-->
     <string name="micTestExplanation">HoneyGuide needs your microphone in order to hear the world chirping! We have set up a test to make sure you are ready to wander on. </string>
