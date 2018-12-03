@@ -25,12 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".defaultPiece"
-            android:label="@string/defaultPiece" />
-        <activity
-            android:name=".artPiece"
-            android:label="@string/artPiece" />
 
         <activity
             android:name=".MainActivity"

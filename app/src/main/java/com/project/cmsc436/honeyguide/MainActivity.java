@@ -35,6 +35,8 @@ import android.content.SharedPreferences;
 public class MainActivity extends AppCompatActivity {
     /** Items entered by the user is stored in this ArrayList variable */
     ArrayList<String> list = new ArrayList<String>();
+    private Map<String,String> pieces = new HashMap<>();
+    String piece;
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
     private String TAG = "Honeyguide-Debug: ";
     private final String COLLECTION_NAME = "art_pieces ";
@@ -128,11 +130,26 @@ public class MainActivity extends AppCompatActivity {
 
     //testing purpose
     public void launchDefaultPiece(){
-        startActivity(new Intent(MainActivity.this,defaultPiece.class));
+        setPiece("1");
+        FragmentTransaction pieceTransaction = getSupportFragmentManager().beginTransaction();
+        pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
+        pieceTransaction.commit();
     }
 
     public ArrayList<String> getList() {
         return list;
+    }
+
+    public Map<String,String> getPieces() {
+        return pieces;
+    }
+
+    public String getPiece() {
+        return piece;
+    }
+
+    public void setPiece(String piece) {
+        this.piece = piece;
     }
 
     public void clearData() {
