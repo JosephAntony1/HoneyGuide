@@ -5,31 +5,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/txtItem"
-        android:layout_width="240dp"
+    <!--<EditText-->
+        <!--android:id="@+id/txtItem"-->
+        <!--android:layout_width="240dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:inputType="text"-->
+        <!--android:hint="@string/hintTxtItem"-->
+        <!--/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/btnAdd"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/lblBtnAdd"-->
+        <!--android:layout_toRightOf="@id/txtItem"-->
+        <!--/>-->
+
+
+    <!--<Button-->
+        <!--android:id="@+id/btnShow"-->
+        <!--android:layout_width="157dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_marginLeft="-99dp"-->
+        <!--android:layout_marginTop="87dp"-->
+        <!--android:layout_toRightOf="@id/txtItem"-->
+        <!--android:text="@string/lblBtnShow" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:hint="@string/hintTxtItem"
+        android:text="Listening for chirps..."
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
         />
 
-    <Button
-        android:id="@+id/btnAdd"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/lblBtnAdd"
-        android:layout_toRightOf="@id/txtItem"
-        />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="268dp"
+        android:layout_height="240dp"
+        android:layout_centerInParent="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/birds" />
 
-
-    <Button
-        android:id="@+id/btnShow"
-        android:layout_width="157dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="-99dp"
-        android:layout_marginTop="87dp"
-        android:layout_toRightOf="@id/txtItem"
-        android:text="@string/lblBtnShow" />
 
 </RelativeLayout>
