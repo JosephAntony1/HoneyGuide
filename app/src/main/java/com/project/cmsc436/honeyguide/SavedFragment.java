@@ -84,7 +84,7 @@ public class SavedFragment extends Fragment {
                 final int pos = position;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+                builder.setMessage(R.string.dialog_message2).setTitle(R.string.dialog_title);
 
                 // Add the buttons
                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
