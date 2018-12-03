@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/gradient_light">
 
     <ListView
         android:id="@android:id/list"
@@ -36,7 +37,6 @@
         android:minHeight="?attr/actionBarSize"
         app:titleTextColor="@android:color/white"
         app:itemIconTint="@color/white"
-        app:title="@string/savedPieces" />
-        <!--app:menu="@menu/saved_pieces_menu"/>-->
+        app:title="@string/savedPieces"/>
 
 </RelativeLayout>
