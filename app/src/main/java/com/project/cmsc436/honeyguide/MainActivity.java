@@ -8,7 +8,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+
 import android.content.IntentFilter;
+
+import android.content.DialogInterface;
+
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,7 +23,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+
 import android.support.v4.content.LocalBroadcastManager;
+
+import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.util.Log;
@@ -48,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> list = new ArrayList<String>();
     private Map<String,String> pieces = new HashMap<>();
     String piece;
+   // ArrayList<String> selectList = new ArrayList<String>();
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
     private String TAG = "Honeyguide-Debug: ";
     private final String COLLECTION_NAME = "art_pieces ";
@@ -155,6 +164,14 @@ public class MainActivity extends AppCompatActivity {
         edit.setText("");
     }
 
+   /* public void selectItem(String item) {
+        selectList.add(item);
+    }
+
+    public ArrayList<String> getSelectList() {
+        return selectList;
+    }
+*/
     //testing purpose
     public void launchDefaultPiece(){
         setPiece("1");
@@ -180,8 +197,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearData() {
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        activityManager.clearApplicationUserData();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+
+        // Add the buttons
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                for(int i = 1; i <= 3; i++){
+                    String name = pieces.get(Integer.toString(i));
+                    getSharedPreferences(name, Context.MODE_PRIVATE).edit().clear().apply();
+
+                }
+                ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                activityManager.clearApplicationUserData();
+
+            }
+        });
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+
+                //Do nothing?
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
@@ -258,10 +299,6 @@ public class MainActivity extends AppCompatActivity {
         Intent i= new Intent(getApplicationContext(), ChirpService.class);
         stopService(i);
         notificationManager.cancel(notificationID);
-
-    }
-
-    public void onGarbageAction(MenuItem m) {
 
     }
 

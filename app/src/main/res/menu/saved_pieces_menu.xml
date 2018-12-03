@@ -5,6 +5,7 @@
         android:id="@+id/piece_garbage_button"
         android:icon="@drawable/garbage"
         android:onClick="onGarbageAction"
+        android:visible="true"
         app:showAsAction="ifRoom"
         android:title="Garbage">
     </item>
