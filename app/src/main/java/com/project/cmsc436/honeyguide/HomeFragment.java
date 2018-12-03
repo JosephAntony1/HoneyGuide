@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = new Intent(getContext(), ChirpService.class);
-
+        ChirpService.currentPiece="";
         startForegroundService(getContext(), i);
     }
 
