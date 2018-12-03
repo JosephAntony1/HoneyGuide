@@ -1,14 +1,22 @@
 package com.project.cmsc436.honeyguide;
 
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.util.Log;
@@ -38,10 +46,13 @@ public class MainActivity extends AppCompatActivity {
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
     private String TAG = "Honeyguide-Debug: ";
     private final String COLLECTION_NAME = "art_pieces ";
+    private final int notificationID = 13822;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference docRef;
     private SharedPreferences sharedpreferences;
+
+    NotificationManager notificationManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,6 +164,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG, "onPause");
+        NotificationChannel channel = new NotificationChannel("honeyguide", "Honeyguide", NotificationManager.IMPORTANCE_DEFAULT);
+        notificationManager  = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(channel);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,0);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
+                .setSmallIcon(R.drawable.garbage)
+                .setContentTitle("Honeyguide")
+                .setContentText("Honeyguide is listening for chirps!")
+                .setContentIntent(pendingIntent)
+                .setOngoing(true);
+
+        notificationManager.notify(notificationID,builder.build());
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -170,6 +203,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Intent i= new Intent(getApplicationContext(), ChirpService.class);
         stopService(i);
+        notificationManager.cancel(notificationID);
+
     }
 
     public void onGarbageAction(MenuItem m) {

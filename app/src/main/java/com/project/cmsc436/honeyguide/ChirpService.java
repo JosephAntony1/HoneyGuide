@@ -103,7 +103,7 @@ public class ChirpService extends Service {
 
         chirpConnect.setListener(connectEventListener);
         chirpConnect.start();
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
 
