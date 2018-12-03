@@ -29,7 +29,6 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/add_temp"
-            android:launchMode="singleInstance"
             />
 
         <activity
@@ -38,6 +37,13 @@
         </activity>
 
         <service android:name=".ChirpService"></service>
+
+        <receiver android:name=".ChirpReciever" >
+            <intent-filter>
+                <action android:name="android.intent.action.RECEIVER_INTENT"/>
+
+            </intent-filter>
+        </receiver>
     </application>
 
 

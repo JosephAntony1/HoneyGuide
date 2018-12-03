@@ -6,7 +6,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.util.Log;
@@ -36,7 +39,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import android.content.SharedPreferences;
-
+import android.widget.Toast;
 
 
 /** Note that here we are inheriting ListActivity class instead of Activity class **/
@@ -53,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference docRef;
     private SharedPreferences sharedpreferences;
-
+    BroadcastReceiver mBroadcastReceiver;
     NotificationManager notificationManager;
-
+    public static final String RECEIVER_INTENT = "RECEIVER_INTENT";
+    public static final String RECEIVER_MESSAGE = "RECEIVER_MESSAGE";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,16 +124,28 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        //set up id - art piece name correlation
+        loadPieces(getPieces());
+
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, HomeFragment.newInstance());
         transaction.commit();
 
-    }
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = intent.getStringExtra(RECEIVER_MESSAGE);
+                Log.i(TAG, "Message received: " + message);
+                setPiece(message);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, PieceFragment.newInstance());
+                transaction.commit();
 
-    public void launchHomeScreen() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
+            }
+        };
+
+
     }
 
     public void addItem() {
@@ -169,6 +185,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((mBroadcastReceiver),
+                new IntentFilter(RECEIVER_INTENT)
+        );
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume");
@@ -179,12 +203,21 @@ public class MainActivity extends AppCompatActivity {
             Intent i= new Intent(getApplicationContext(), ChirpService.class);
             startService(i);
         }
+
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+
     public void onPause() {
         super.onPause();
         Log.i(TAG, "onPause");
+
+    }
+
+    @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    protected void onStop() {
+        super.onStop();
         NotificationChannel channel = new NotificationChannel("honeyguide", "Honeyguide", NotificationManager.IMPORTANCE_DEFAULT);
         notificationManager  = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
@@ -197,9 +230,12 @@ public class MainActivity extends AppCompatActivity {
                 .setContentTitle("Honeyguide")
                 .setContentText("Honeyguide is listening for chirps!")
                 .setContentIntent(pendingIntent)
-                .setOngoing(true);
+                .setOngoing(true)
+                .setAutoCancel(true);
 
         notificationManager.notify(notificationID,builder.build());
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
 
     }
 
@@ -228,4 +264,13 @@ public class MainActivity extends AppCompatActivity {
     public void onGarbageAction(MenuItem m) {
 
     }
+
+
+    private void loadPieces(Map<String,String> pieces){
+        pieces.put("1","Sunflowers");
+        pieces.put("2","A Young Woman standing at a Virginal");
+        pieces.put("3","The Fighting Temeraire");
+    }
+
+
 }

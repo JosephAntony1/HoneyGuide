@@ -33,8 +33,7 @@ public class PieceFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_piece, container, false);
         MainActivity activity = (MainActivity) getActivity();
 
-        //set up id - art piece name correlation
-        loadPieces(activity.getPieces());
+
 
         //fetch the id received
         String id = activity.getPiece();
@@ -70,9 +69,4 @@ public class PieceFragment extends Fragment {
         return view;
     }
 
-    private void loadPieces(Map<String,String> pieces){
-        pieces.put("1","Sunflowers");
-        pieces.put("2","A Young Woman standing at a Virginal");
-        pieces.put("3","The Fighting Temeraire");
-    }
 }
