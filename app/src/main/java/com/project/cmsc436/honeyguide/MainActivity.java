@@ -175,26 +175,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearData() {
-
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
 
         // Add the buttons
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+
+                for(int i = 1; i <= 3; i++){
+                    String name = pieces.get(Integer.toString(i));
+                    getSharedPreferences(name, Context.MODE_PRIVATE).edit().clear().apply();
+
+                }
                 ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                 activityManager.clearApplicationUserData();
+
             }
         });
         builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog
+
                 //Do nothing?
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
     @Override
