@@ -42,13 +42,9 @@ public class PieceFragment extends Fragment {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        //set up id - art piece name correlation
-        loadPieces(activity.getPieces());
-
 
         //fetch the id received
-        String id = activity.getPiece();
-        String name = activity.getPieces().get(id);
+        String name = activity.getPiece();
 
         //fetch content from local SharedPreference
         sharedpreferences = activity.getSharedPreferences(name, Context.MODE_PRIVATE);
@@ -78,12 +74,6 @@ public class PieceFragment extends Fragment {
         p3.setText(description3);
 
         return view;
-    }
-
-    private void loadPieces(Map<String,String> pieces){
-        pieces.put("1","Sunflowers");
-        pieces.put("2","A Young Woman standing at a Virginal");
-        pieces.put("3","The Fighting Temeraire");
     }
 
     @Override
