@@ -3,8 +3,6 @@
     <string name="app_name">Honeyguide</string>
 
     <string name="welcome">Welcome</string>
-    <!--<string name="welcomeStr">Welcome to the HoneyGuide for The National Gallery!</string>
-    <string name="start_button_str">Click to start your visit journey!</string>-->
 
     <string name="defaultPiece">Searching for art piece</string>
     <string name="defaultPieceStr">Walk closer to the art piece you want to know more!</string>
@@ -30,9 +28,6 @@
     <!--<string name="add_temp">Add Piece (Test Activity)</string>-->
     <string name="show_piece">Show Piece (WIP)</string>
 
-    <string name="hintTxtItem">Enter an item here ...</string>
-    <string name="lblBtnAdd">Add Item</string>
-    <string name="lblBtnShow">Show Pieces</string>
     <string name="txtEmpty">List is empty</string>
 
     <string name="saveIcon">Save the Art Piece</string>

@@ -70,10 +70,6 @@ public class SavedFragment extends Fragment {
                 FragmentTransaction pieceTransaction = activity.getSupportFragmentManager().beginTransaction();
                 pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
                 pieceTransaction.commit();
-                /*Intent intent = new Intent(getActivity(), ShowPiece.class);
-                intent.putStringArrayListExtra("pieces", list);
-                intent.putExtra("piece", listView.getItemAtPosition(position).toString());
-                startActivity(intent);*/
             }
         });
 
