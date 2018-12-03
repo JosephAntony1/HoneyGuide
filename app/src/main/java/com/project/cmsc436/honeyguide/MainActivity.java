@@ -309,5 +309,10 @@ public class MainActivity extends AppCompatActivity {
         pieces.put("3","The Fighting Temeraire");
     }
 
-
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed Called");
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
 }

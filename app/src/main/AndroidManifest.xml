@@ -38,12 +38,6 @@
 
         <service android:name=".ChirpService"></service>
 
-        <receiver android:name=".ChirpReciever" >
-            <intent-filter>
-                <action android:name="android.intent.action.RECEIVER_INTENT"/>
-
-            </intent-filter>
-        </receiver>
     </application>
 
 
