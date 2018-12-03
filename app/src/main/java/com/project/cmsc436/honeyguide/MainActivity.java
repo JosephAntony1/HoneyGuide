@@ -37,7 +37,9 @@ import android.widget.EditText;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import android.content.Intent;
 
@@ -58,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> list = new ArrayList<String>();
     private Map<String,String> pieces = new HashMap<>();
     String piece;
-   // ArrayList<String> selectList = new ArrayList<String>();
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
     private String TAG = "Honeyguide-Debug: ";
     private final String COLLECTION_NAME = "art_pieces ";
@@ -106,34 +107,49 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         //fetching information from firebase once
+        //check if there is local storage
+        sharedpreferences = getSharedPreferences("Sunflowers",Context.MODE_PRIVATE);
+        if(!sharedpreferences.contains("Full title")){
+            //no local storage, download from firebase
+            Log.i(TAG,"First time downloading from firebase");
+            for(int i = 1; i <= 3; i++){
+                docRef = db.collection(COLLECTION_NAME).document(Integer.toString(i));
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Map< String,Object> docFields = document.getData();
+                                String title = docFields.get("Full title").toString();
+                                Log.d(TAG, "Firebase Success: " + title);
+                                sharedpreferences = getSharedPreferences(title, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
 
-        for(int i = 1; i <= 3; i++){
-            docRef = db.collection(COLLECTION_NAME).document(Integer.toString(i));
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Map< String,Object> docFields = document.getData();
-                            String title = docFields.get("Full title").toString();
-                            Log.d(TAG, "Firebase Success: " + title);
-                            sharedpreferences = getSharedPreferences(title, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                                for (Map.Entry<String,Object> field : docFields.entrySet()){
+                                    editor.putString(field.getKey(), field.getValue().toString());
+                                }
 
-                            for (Map.Entry<String,Object> field : docFields.entrySet()){
-                                editor.putString(field.getKey(), field.getValue().toString());
+                                editor.apply();
+                            } else {
+                                Log.d(TAG, "No such document");
                             }
-
-                            editor.apply();
                         } else {
-                            Log.d(TAG, "No such document");
+                            Log.d(TAG, "get failed with ", task.getException());
                         }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
                     }
-                }
-            });
+                });
+            }
+        }
+
+        //check if local storage of saved piece list
+        sharedpreferences = getSharedPreferences("savedList",Context.MODE_PRIVATE);
+        Set<String> savedList = sharedpreferences.getStringSet("savedList",null);
+
+        if(savedList != null) {
+            //have saved list: add art pieces to list
+            Log.i(TAG, "Retrieve from local saved art piece list");
+            list.addAll(savedList);
         }
 
         //set up id - art piece name correlation
@@ -183,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
         Log.i("i", "entered saveArtPiece()");
         //save to the listivew
         list.add(getPiece());
-        //update local list
     }
 
     public ArrayList<String> getList() {
@@ -264,6 +279,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
 
+        //save list to local
+        Log.i(TAG,"Enterd onStop() method to save list to local");
+        Set<String> savedList = new HashSet<>(list);
+        sharedpreferences = getSharedPreferences("savedList",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putStringSet("savedList",savedList);
+        editor.apply();
     }
 
     @Override
