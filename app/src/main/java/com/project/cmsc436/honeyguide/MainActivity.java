@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,0);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
-                .setSmallIcon(R.drawable.garbage)
+                .setSmallIcon(R.drawable.robin)
                 .setContentTitle("Honeyguide")
                 .setContentText("Honeyguide is listening for chirps!")
                 .setContentIntent(pendingIntent)
