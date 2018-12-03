@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.preference.Preference;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         return true;
                     }
         });
-        Intent i= new Intent(getContext(), ChirpService.class);
+
+        findPreference(getString(R.string.settings_about)).setOnPreferenceClickListener(
+                new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, AboutFragment.newInstance());
+                        transaction.commit();
+                        return true;
+                    }
+                });
+
+        Intent i = new Intent(getContext(), ChirpService.class);
         getActivity().stopService(i);
     }
 }
