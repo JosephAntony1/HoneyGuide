@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 String message = intent.getStringExtra(RECEIVER_MESSAGE);
                 Log.i(TAG, "Message received: " + message);
-                setPiece(message);
+                setPiecebyID(message);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.frame_layout, PieceFragment.newInstance());
                 transaction.commit();
@@ -167,11 +167,11 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(getApplicationContext(), ChirpService.class);
 
             if(id!= null){
-                setPiece(id);
+                setPiecebyID(id);
                 FragmentTransaction pieceTransaction = getSupportFragmentManager().beginTransaction();
                 pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
                 pieceTransaction.commit();
-                i.putExtra("piece",pieces.get(id ));
+                i.putExtra("piece",pieces.get(id));
             }
                 startService(i);
 
@@ -179,27 +179,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public void addItem() {
-//        Log.i("i", "entered addItem()");
-//        EditText edit = (EditText) findViewById(R.id.txtItem);
-//        list.add(edit.getText().toString());
-//        edit.setText("");
-//    }
-
     public void saveArtPiece() {
         Log.i("i", "entered saveArtPiece()");
-        String name = pieces.get(piece);
-        list.add(name);
+        list.add(getPiece());
     }
-
-   /* public void selectItem(String item) {
-        selectList.add(item);
-    }
-
-    public ArrayList<String> getSelectList() {
-        return selectList;
-    }
-*/
 
     public ArrayList<String> getList() {
         return list;
@@ -213,8 +196,12 @@ public class MainActivity extends AppCompatActivity {
         return piece;
     }
 
-    public void setPiece(String piece) {
-        this.piece = piece;
+    public void setPiecebyName(String name) {
+        this.piece = name;
+    }
+
+    public void setPiecebyID(String id) {
+        this.piece = pieces.get(id);
     }
 
     public void clearData() {
@@ -314,8 +301,7 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveAction(MenuItem m) {
        Log.i(TAG,"Enter the onSaveAction");
        saveArtPiece();
-       String name = pieces.get(piece);
-       Toast.makeText(getApplicationContext(), "The art piece: "+name+"is saved!", Toast.LENGTH_SHORT).show();
+       Toast.makeText(getApplicationContext(), "Saved art piece: "+getPiece(), Toast.LENGTH_SHORT).show();
     }
 
     private void loadPieces(Map<String,String> pieces){
