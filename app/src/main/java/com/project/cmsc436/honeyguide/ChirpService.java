@@ -178,7 +178,6 @@ public class ChirpService extends Service {
         return Service.START_STICKY;
     }
 
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -188,7 +187,6 @@ public class ChirpService extends Service {
     @Override
     public void onDestroy() {
         Log.i(TAG, "STOPPED SERVICE!");
-        super.onDestroy();
         chirpConnect.stop();
         currentPiece = "";
         stopForeground(true);
@@ -197,6 +195,7 @@ public class ChirpService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        super.onDestroy();
 
     }
 

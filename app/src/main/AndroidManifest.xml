@@ -19,8 +19,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".WelcomePage"
-            android:label="@string/welcome">
+            android:name=".WelcomePage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
