@@ -266,13 +266,12 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         Log.i(TAG, "onPause");
         isVisible = false;
+        ChirpService.currentPiece = "";
     }
 
     @Override
-    @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onStop() {
         super.onStop();
-
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
 
     }

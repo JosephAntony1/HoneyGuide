@@ -44,12 +44,16 @@ public class ChirpService extends Service {
     private ConnectEventListener connectEventListener;
     private ChirpConnect chirpConnect;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private String ACTION_STOP_SERVICE = "halt";
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
 
         Log.i(TAG, "STARTED SERVICE!");
 
+        if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
+            Log.d(TAG,"called to cancel service");
+            stopSelf();
+        }
         String KEY = getString(R.string.chirp_application_key);
         String SECRET = getString(R.string.chirp_client_secret);
 
@@ -141,31 +145,25 @@ public class ChirpService extends Service {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i,0);
 
- /*       NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
-                .setSmallIcon(R.drawable.robin)
-                .setContentTitle("Honeyguide")
-                .setContentText("Honeyguide is listening for chirps!")
-                .setContentIntent(pendingIntent)
-                .setOngoing(true)
-                .setAutoCancel(false)
-                .setVibrate(new long[]{500, 500, 500, 500}
-                );
-
-        Notification n = builder.build();
-
-        startForeground(MainActivity.notificationID, n);*/
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent p=PendingIntent.getActivity(this,0,notificationIntent,0);
+
+        Intent stopSelf = new Intent(this, ChirpService.class);
+        stopSelf.setAction(this.ACTION_STOP_SERVICE);
+        PendingIntent pStopSelf = PendingIntent.getService(this, 0, stopSelf,PendingIntent.FLAG_CANCEL_CURRENT);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
                 .setSmallIcon(R.drawable.robin)
                 .setContentTitle("Honeyguide")
                 .setContentText("Honeyguide is listening for chirps!")
-                .setContentIntent(pendingIntent)
+                .setContentIntent(p)
                 .setOngoing(true)
                 .setAutoCancel(false)
-                .setVibrate(new long[]{ 0 });
+                .setVibrate(new long[]{ 0 })
+                .addAction(R.drawable.ic_clear, "Stop", pStopSelf);;
         Notification notification=builder.build();
+
         if(Build.VERSION.SDK_INT>=26) {
             NotificationChannel channel = new NotificationChannel("honeyguide", "Honeyguide", NotificationManager.IMPORTANCE_DEFAULT);
             channel.setDescription("Honeyguide Mic Service");
