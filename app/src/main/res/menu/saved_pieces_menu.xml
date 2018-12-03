@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/piece_garbage_button"
-        android:icon="@drawable/garbage"
+        android:icon="@drawable/garbagewhite"
         android:onClick="onGarbageAction"
         android:visible="true"
         app:showAsAction="ifRoom"

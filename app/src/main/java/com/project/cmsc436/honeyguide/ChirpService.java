@@ -1,13 +1,26 @@
 package com.project.cmsc436.honeyguide;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,19 +38,21 @@ import io.chirp.connect.models.ChirpError;
 
 
 public class ChirpService extends Service {
-
     private String TAG = "Honeyguide-Debug: ";
-
+    public static String currentPiece = "";
     private ConnectEventListener connectEventListener;
     private ChirpConnect chirpConnect;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
+    private String ACTION_STOP_SERVICE = "halt";
+    private String notificationText = "Honeyguide is listening for chirps!";
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
 
         Log.i(TAG, "STARTED SERVICE!");
-
+        if (ACTION_STOP_SERVICE.equals(intent.getAction())) {
+            Log.d(TAG,"called to cancel service");
+            stopSelf();
+        }
         String KEY = getString(R.string.chirp_application_key);
         String SECRET = getString(R.string.chirp_client_secret);
 
@@ -78,17 +93,38 @@ public class ChirpService extends Service {
 
             @Override
             public void onReceived(byte[] payload, byte channel) {
-                if(payload!=null) {
+                if (payload != null) {
                     String id = new String(payload);
                     Log.v(TAG, "This is called when a payload has been received \"" + id + "\" on channel: " + channel);
 
-                    Intent activateArtPiece = new Intent(getApplicationContext(),artPiece.class);
-                    activateArtPiece.putExtra("num",id);
-                    activateArtPiece.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(activateArtPiece);
+
+                    if (!id.equals(currentPiece)) {
+
+                        if (MainActivity.isVisible) {
+                            Intent intent = new Intent(MainActivity.RECEIVER_INTENT);
+                            intent.putExtra(MainActivity.RECEIVER_MESSAGE, id);
+                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.putExtra("data", id);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                        notificationText = "Honeyguide found a piece!";
+                        currentPiece = id;
+
+                        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                        // Vibrate for 500 milliseconds
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            v.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+                        } else {
+                            //deprecated in API 26
+                            v.vibrate(100);
+                        }
+
+                    }
                 }
             }
-
             @Override
             public void onStateChanged(byte oldState, byte newState) {
                 Log.v(TAG, "This is called when the SDK state has changed " + oldState + " -> " + newState);
@@ -103,9 +139,50 @@ public class ChirpService extends Service {
 
         chirpConnect.setListener(connectEventListener);
         chirpConnect.start();
-        return Service.START_STICKY;
-    }
 
+        Intent i = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i,0);
+
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent p=PendingIntent.getActivity(this,0,notificationIntent,0);
+
+        Intent stopSelf = new Intent(this, ChirpService.class);
+        stopSelf.setAction(this.ACTION_STOP_SERVICE);
+        PendingIntent pStopSelf = PendingIntent.getService(this, 0, stopSelf,PendingIntent.FLAG_CANCEL_CURRENT);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
+                .setSmallIcon(R.drawable.robin)
+                .setContentTitle("Honeyguide")
+                .setContentText(notificationText)
+                .setContentIntent(p)
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .setVibrate(new long[]{ 0 })
+                .addAction(R.drawable.ic_clear, "Stop", pStopSelf);;
+
+        if(intent.getStringExtra("piece")!= null){
+            builder.setContentText("Found " + intent.getStringExtra("piece")+"!");
+        }
+
+            Notification notification=builder.build();
+
+
+
+        if(Build.VERSION.SDK_INT>=26) {
+            NotificationChannel channel = new NotificationChannel("honeyguide", "Honeyguide", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("Honeyguide Mic Service");
+            channel.setVibrationPattern(new long[]{ 0 });
+            channel.enableVibration(true);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
+        startForeground(MainActivity.notificationID, notification);
+
+
+        return Service.START_REDELIVER_INTENT;
+    }
 
     @Nullable
     @Override
@@ -115,12 +192,17 @@ public class ChirpService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        Log.i(TAG, "STOPPED SERVICE!");
         chirpConnect.stop();
+        currentPiece = "";
+        stopForeground(true);
         try {
             chirpConnect.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        super.onDestroy();
+
     }
+
 }

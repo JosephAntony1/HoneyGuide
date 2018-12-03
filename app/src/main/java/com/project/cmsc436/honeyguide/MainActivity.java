@@ -6,11 +6,18 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+
+import android.content.IntentFilter;
+
 import android.content.DialogInterface;
+
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
@@ -18,7 +25,11 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
+
+import android.support.v4.content.LocalBroadcastManager;
+
 import android.support.v7.app.AlertDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.util.Log;
@@ -51,14 +62,16 @@ public class MainActivity extends AppCompatActivity {
     private final int RESULT_REQUEST_RECORD_AUDIO = 1;
     private String TAG = "Honeyguide-Debug: ";
     private final String COLLECTION_NAME = "art_pieces ";
-    private final int notificationID = 13822;
+    public static final int notificationID = 13822;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference docRef;
     private SharedPreferences sharedpreferences;
+    BroadcastReceiver mBroadcastReceiver;
 
-    NotificationManager notificationManager;
-
+    public static boolean isVisible;
+    public static final String RECEIVER_INTENT = "RECEIVER_INTENT";
+    public static final String RECEIVER_MESSAGE = "RECEIVER_MESSAGE";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,39 +136,52 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        //set up id - art piece name correlation
+        loadPieces(getPieces());
+
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, HomeFragment.newInstance());
         transaction.commit();
 
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String message = intent.getStringExtra(RECEIVER_MESSAGE);
+                Log.i(TAG, "Message received: " + message);
+                setPiecebyID(message);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, PieceFragment.newInstance());
+                transaction.commit();
+
+            }
+        };
+
+        if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.RECORD_AUDIO}, RESULT_REQUEST_RECORD_AUDIO);
+        }
+        else {
+
+            String id = getIntent().getStringExtra("data");
+            Log.i(TAG, getIntent().getExtras() + " WAS RECEIVED");
+            Intent i = new Intent(getApplicationContext(), ChirpService.class);
+
+            if(id!= null){
+                setPiecebyID(id);
+                FragmentTransaction pieceTransaction = getSupportFragmentManager().beginTransaction();
+                pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
+                pieceTransaction.commit();
+                i.putExtra("piece",pieces.get(id));
+            }
+                startService(i);
+
+        }
+
     }
 
-    public void launchHomeScreen() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
-
-    public void addItem() {
-        Log.i("i", "entered addItem()");
-        EditText edit = (EditText) findViewById(R.id.txtItem);
-        list.add(edit.getText().toString());
-        edit.setText("");
-    }
-
-   /* public void selectItem(String item) {
-        selectList.add(item);
-    }
-
-    public ArrayList<String> getSelectList() {
-        return selectList;
-    }
-*/
-    //testing purpose
-    public void launchDefaultPiece(){
-        setPiece("1");
-        FragmentTransaction pieceTransaction = getSupportFragmentManager().beginTransaction();
-        pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
-        pieceTransaction.commit();
+    public void saveArtPiece() {
+        Log.i("i", "entered saveArtPiece()");
+        list.add(getPiece());
     }
 
     public ArrayList<String> getList() {
@@ -170,8 +196,12 @@ public class MainActivity extends AppCompatActivity {
         return piece;
     }
 
-    public void setPiece(String piece) {
-        this.piece = piece;
+    public void setPiecebyName(String name) {
+        this.piece = name;
+    }
+
+    public void setPiecebyID(String id) {
+        this.piece = pieces.get(id);
     }
 
     public void clearData() {
@@ -204,37 +234,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver((mBroadcastReceiver),
+                new IntentFilter(RECEIVER_INTENT)
+        );
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Log.i(TAG, "onResume");
-        if (checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.RECORD_AUDIO}, RESULT_REQUEST_RECORD_AUDIO);
-        }
-        else {
-            Intent i= new Intent(getApplicationContext(), ChirpService.class);
-            startService(i);
-        }
+        isVisible = true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+
     public void onPause() {
         super.onPause();
         Log.i(TAG, "onPause");
-        NotificationChannel channel = new NotificationChannel("honeyguide", "Honeyguide", NotificationManager.IMPORTANCE_DEFAULT);
-        notificationManager  = (NotificationManager) getSystemService(Service.NOTIFICATION_SERVICE);
-        notificationManager.createNotificationChannel(channel);
+        isVisible = false;
+        ChirpService.currentPiece = "";
+    }
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,0);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "honeyguide")
-                .setSmallIcon(R.drawable.robin)
-                .setContentTitle("Honeyguide")
-                .setContentText("Honeyguide is listening for chirps!")
-                .setContentIntent(pendingIntent)
-                .setOngoing(true);
-
-        notificationManager.notify(notificationID,builder.build());
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
 
     }
 
@@ -244,7 +270,8 @@ public class MainActivity extends AppCompatActivity {
             case RESULT_REQUEST_RECORD_AUDIO: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Intent i= new Intent(getApplicationContext(), ChirpService.class);
-                    startService(i);                }
+                    startService(i);
+                }
                 return;
             }
         }
@@ -256,12 +283,40 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Intent i= new Intent(getApplicationContext(), ChirpService.class);
         stopService(i);
-        notificationManager.cancel(notificationID);
-
     }
 
-    /*public void onGarbageAction(MenuItem m) {
-        selectList.clear();
-        SavedFragment.newInstance();
-    }*/
+    public void onShareAction(MenuItem m) {
+        Log.i(TAG,"Enter the onShareAction");
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        String shareBody = "Art piece title";
+        String shareSubject = "Art piece subject";
+
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, shareSubject);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+
+        startActivity(Intent.createChooser(shareIntent, "Share using"));
+    }
+
+    public void onSaveAction(MenuItem m) {
+       Log.i(TAG,"Enter the onSaveAction");
+       saveArtPiece();
+       Toast.makeText(getApplicationContext(), "Saved art piece: "+getPiece(), Toast.LENGTH_SHORT).show();
+    }
+
+    private void loadPieces(Map<String,String> pieces){
+        pieces.put("1","Sunflowers");
+        pieces.put("2","A Young Woman standing at a Virginal");
+        pieces.put("3","The Fighting Temeraire");
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed Called");
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, HomeFragment.newInstance());
+        transaction.commit();
+        ChirpService.currentPiece = "";
+    }
+
 }

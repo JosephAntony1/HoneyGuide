@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,7 +28,9 @@ public class PieceFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -33,12 +39,12 @@ public class PieceFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_piece, container, false);
         MainActivity activity = (MainActivity) getActivity();
 
-        //set up id - art piece name correlation
-        loadPieces(activity.getPieces());
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
 
         //fetch the id received
-        String id = activity.getPiece();
-        String name = activity.getPieces().get(id);
+        String name = activity.getPiece();
 
         //fetch content from local SharedPreference
         sharedpreferences = activity.getSharedPreferences(name, Context.MODE_PRIVATE);
@@ -70,9 +76,8 @@ public class PieceFragment extends Fragment {
         return view;
     }
 
-    private void loadPieces(Map<String,String> pieces){
-        pieces.put("1","Sunflowers");
-        pieces.put("2","A Young Woman standing at a Virginal");
-        pieces.put("3","The Fighting Temeraire");
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+       inflater.inflate(R.menu.pieces_menu_fragment, menu);
     }
 }

@@ -23,10 +23,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.util.Log;
 
 public class SavedFragment extends Fragment {
 
-
+    private final String TAG = "SavedFragmet";
     ArrayList<String> list = new ArrayList<String>();
     //ArrayList<String> selectList = new ArrayList<String>();
     ArrayAdapter<String> adapter;
@@ -66,14 +67,11 @@ public class SavedFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                activity.setPiece((String) listView.getItemAtPosition(position));
+                Log.d(TAG,"Clicked on saved piece: "+list.get(position));
+                activity.setPiecebyName(list.get(position));
                 FragmentTransaction pieceTransaction = activity.getSupportFragmentManager().beginTransaction();
                 pieceTransaction.replace(R.id.frame_layout, new PieceFragment());
                 pieceTransaction.commit();
-                /*Intent intent = new Intent(getActivity(), ShowPiece.class);
-                intent.putStringArrayListExtra("pieces", list);
-                intent.putExtra("piece", listView.getItemAtPosition(position).toString());
-                startActivity(intent);*/
             }
         });
 
@@ -89,10 +87,9 @@ public class SavedFragment extends Fragment {
                 // Add the buttons
                 builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Toast.makeText(getActivity(), "Deleting", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Deleted art piece: "+list.get(pos), Toast.LENGTH_LONG).show();
                         adapter.remove(list.get(pos));
                         adapter.notifyDataSetChanged();
-
                     }
                 });
                 builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {

@@ -3,8 +3,6 @@
     <string name="app_name">Honeyguide</string>
 
     <string name="welcome">Welcome</string>
-    <!--<string name="welcomeStr">Welcome to the HoneyGuide for The National Gallery!</string>
-    <string name="start_button_str">Click to start your visit journey!</string>-->
 
     <string name="defaultPiece">Searching for art piece</string>
     <string name="defaultPieceStr">Walk closer to the art piece you want to know more!</string>
@@ -27,13 +25,13 @@
     <string name="saveArtPiece_button_str">Save</string>
 
     <string name="list_pieces">List Pieces (WIP)</string>
-    <string name="add_temp">Add Piece (Test Activity)</string>
+    <!--<string name="add_temp">Add Piece (Test Activity)</string>-->
     <string name="show_piece">Show Piece (WIP)</string>
 
-    <string name="hintTxtItem">Enter an item here ...</string>
-    <string name="lblBtnAdd">Add Item</string>
-    <string name="lblBtnShow">Show Pieces</string>
     <string name="txtEmpty">List is empty</string>
+
+    <string name="saveIcon">Save the Art Piece</string>
+    <string name="shareIcon">Share the Art Piece</string>
 
     <string name="title_activity_welcome">Home Screen</string>
     <string name="next">NEXT</string>
@@ -57,6 +55,7 @@
 
     <string name="settings_intro">settings_intro</string>
     <string name="settings_clear">settings_clear</string>
+    <string name="settings_about">settings_about</string>
 
     <!--mic test strings-->
     <string name="micTestExplanation">HoneyGuide needs your microphone in order to hear the world chirping! We have set up a test to make sure you are ready to wander on. </string>
