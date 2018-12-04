@@ -7,4 +7,4 @@ Honeyguide is an app that allows you to effortlessly tour a museum and get infor
 
 ### Usage
 
-Start the app and ensure the notification that the app is listening for chirps exists on the top left of your phone. Play of the .wav files labeled: description1, description2, or description3 while the app is listening for chirps and the app will bring up information about a particular art piece. 
+Start the app and ensure the notification that the app is listening for chirps exists on the top left of your phone. Play one of the .wav files labeled: description1, description2, or description3 while the app is listening for chirps and the app will bring up information about a particular art piece. 
