@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearData() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+        builder.setMessage(R.string.diloag_message2).setTitle(R.string.diag_clear);
 
         // Add the buttons
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
